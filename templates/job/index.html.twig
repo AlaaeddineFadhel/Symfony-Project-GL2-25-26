@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alumni | Jobs{% endblock %}
+
+{% block body %}
+
+<div class="page-content container-fluid px-4">
+
+    <div class="row g-4">
+        <div class="col-lg-3">
+
+            <form method="GET" class="card shadow-sm sticky-top" style="top:90px;">
+                <div class="card-body">
+
+                    <h5>Filters</h5>
+                    <hr>
+
+                    <div class="mb-3">
+                        <h6 class="text-muted small">Job Type</h6>
+
+                        <div class="bubble-group">
+
+                            <div class="bubble {% if jobType == '' %}active{% endif %}" data-value="">
+                                All
+                            </div>
+
+                            <div class="bubble {% if jobType == 'full-time' %}active{% endif %}" data-value="full-time">
+                                Full-time
+                            </div>
+
+                            <div class="bubble {% if jobType == 'part-time' %}active{% endif %}" data-value="part-time">
+                                Part-time
+                            </div>
+
+                            <div class="bubble {% if jobType == 'internship' %}active{% endif %}" data-value="internship">
+                                Internship
+                            </div>
+
+                        </div>
+
+                        <input type="hidden" name="job_type" id="jobTypeInput" value="{{ jobType }}">
+                    </div>
+
+                    <div class="mb-3">
+
+                        <h6 class="text-muted small">Work Mode</h6>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="remoteCheck"
+                                   name="remote"
+                                   value="1"
+                                   {% if remote == '1' %}checked{% endif %}>
+                            <label class="form-check-label">Remote</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="onsiteCheck"
+                                   name="onsite"
+                                   value="1"
+                                   {% if onsite == '1' %}checked{% endif %}>
+                            <label class="form-check-label">Onsite</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="hybridCheck"
+                                   name="hybrid"
+                                   value="1"
+                                   {% if hybrid == '1' %}checked{% endif %}>
+                            <label class="form-check-label">Hybrid</label>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <h6 class="text-muted small">Salary</h6>
+
+                        <input type="range"
+                               class="form-range"
+                               min="100"
+                               max="5000"
+                               value="{{ salary }}"
+                               id="range4"
+                               name="salary">
+
+                        <div class="d-flex justify-content-between small mt-1">
+                            <span>100</span>
+                            <span id="rangeValue">{{ salary }} DT</span>
+                            <span>5000</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+
+        <div class="col-lg-9">
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+
+                    <form method="GET" class="row g-2">
+
+                        <div class="col-md-5">
+                            <input type="text"
+                                   name="title"
+                                   class="form-control"
+                                   placeholder="Job title..."
+                                   value="{{ title }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <select name="country" class="form-select">
+                                <option value="">Country</option>
+                                <option value="1" {% if country == '1' %}selected{% endif %}>Tunisia</option>
+                                <option value="2" {% if country == '2' %}selected{% endif %}>France</option>
+                                <option value="3" {% if country == '3' %}selected{% endif %}>Canada</option>
+                                <option value="4" {% if country == '4' %}selected{% endif %}>Germany</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <select name="city" class="form-select">
+                                <option value="">City</option>
+                                <option value="1" {% if city == '1' %}selected{% endif %}>Tunis</option>
+                                <option value="2" {% if city == '2' %}selected{% endif %}>Sfax</option>
+                                <option value="3" {% if city == '3' %}selected{% endif %}>Sousse</option>
+                                <option value="4" {% if city == '4' %}selected{% endif %}>Nabeul</option>
+                                <option value="5" {% if city == '5' %}selected{% endif %}>Monastir</option>
+                                <option value="6" {% if city == '6' %}selected{% endif %}>Ariana</option>
+                                <option value="7" {% if city == '7' %}selected{% endif %}>Paris</option>
+                                <option value="8" {% if city == '8' %}selected{% endif %}>Lyon</option>
+                                <option value="9" {% if city == '9' %}selected{% endif %}>Montreal</option>
+                                <option value="10" {% if city == '10' %}selected{% endif %}>Berlin</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-1 d-grid">
+                            <button class="btn btn-primary">Search</button>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end">
+                            <a class="btn btn-outline-primary" href="#">
+                                + Post a Job
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row g-3">
+
+                {% for job in jobs %}
+
+                    <div class="col-md-6 col-xl-4">
+
+                        <div class="card job-card h-100 shadow-sm">
+
+                            <div class="card-body d-flex flex-column">
+
+                                <h5>{{ job.titre }}</h5>
+
+                                <div class="text-muted small mb-2">
+                                    {{ job.job_type }} • {{ job.job_mode }}
+                                </div>
+
+                                <p class="flex-grow-1">
+                                    {{ job.description|slice(0,110) }}...
+                                </p>
+
+                                <a href="{{ path('job_show', {id: job.id}) }}"
+                                   class="btn btn-primary mt-auto">
+                                    View details
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+<script>
+const bubbles = document.querySelectorAll(".bubble");
+const jobTypeInput = document.getElementById("jobTypeInput");
+
+bubbles.forEach(b => {
+    b.addEventListener("click", () => {
+        bubbles.forEach(x => x.classList.remove("active"));
+        b.classList.add("active");
+        jobTypeInput.value = b.dataset.value;
+        b.closest("form").submit();
+    });
+});
+
+const range = document.getElementById("range4");
+const rangeValue = document.getElementById("rangeValue");
+
+range.addEventListener("input", () => {
+    rangeValue.textContent = range.value + " DT";
+});
+
+range.addEventListener("change", () => {
+    range.form.submit();
+});
+
+document.getElementById("remoteCheck")?.addEventListener("change", function () {
+    this.form.submit();
+});
+
+document.getElementById("onsiteCheck")?.addEventListener("change", function () {
+    this.form.submit();
+});
+
+document.getElementById("hybridCheck")?.addEventListener("change", function () {
+    this.form.submit();
+});
+</script>
+
+{% endblock %}
