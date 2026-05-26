@@ -1,0 +1,12 @@
+<div class="profile-card card">
+    <img src="{{ profile.avatar_url }}" class="card-img-top">
+
+    <div class="card-body">
+        <h5>{{ profile.prenom }} {{ profile.nom }}</h5>
+        <p>{{ profile.tagline }}</p>
+
+        <a href="/profile/{{ profile.id }}" class="btn btn-primary w-100">
+            View Profile
+        </a>
+    </div>
+</div>

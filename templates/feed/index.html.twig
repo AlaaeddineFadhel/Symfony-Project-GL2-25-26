@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Feed{% endblock %}
+
+{% block body %}
+
+<h1>Meet INSATiens</h1>
+
+<div class="marquee-track">
+    {% for profile in profiles %}
+        {% include 'components/profile_card.html.twig' %}
+    {% endfor %}
+</div>
+
+<h1>Jobs</h1>
+
+<div class="row">
+    {% for job in jobs %}
+        <div class="col-md-4">
+            {% include 'components/job_card.html.twig' %}
+        </div>
+    {% endfor %}
+</div>
+
+<h1>Internships</h1>
+
+<div class="row">
+    {% for job in internships %}
+        <div class="col-md-4">
+            {% include 'components/job_card.html.twig' %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
