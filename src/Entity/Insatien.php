@@ -23,7 +23,7 @@ class Insatien
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $promo_year = null;
+    private ?int $promoYear = null;
 
     #[ORM\ManyToOne(inversedBy: 'insatiens')]
     private ?Parcours $parcours = null;
@@ -71,12 +71,12 @@ class Insatien
 
     public function getPromoYear(): ?int
     {
-        return $this->promo_year;
+        return $this->promoYear;
     }
 
     public function setPromoYear(?int $promo_year): static
     {
-        $this->promo_year = $promo_year;
+        $this->promoYear = $promo_year;
 
         return $this;
     }

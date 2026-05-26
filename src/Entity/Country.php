@@ -27,9 +27,16 @@ class Country
     #[ORM\OneToMany(targetEntity: City::class, mappedBy: 'country')]
     private Collection $cities;
 
+    /**
+     * @var Collection<int, Job>
+     */
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'country')]
+    private Collection $jobs;
+
     public function __construct()
     {
         $this->cities = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,6 +92,36 @@ class Country
             // set the owning side to null (unless already changed)
             if ($city->getCountry() === $this) {
                 $city->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
+    }
+
+    public function addJob(Job $job): static
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+            $job->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(Job $job): static
+    {
+        if ($this->jobs->removeElement($job)) {
+            // set the owning side to null (unless already changed)
+            if ($job->getCountry() === $this) {
+                $job->setCountry(null);
             }
         }
 
