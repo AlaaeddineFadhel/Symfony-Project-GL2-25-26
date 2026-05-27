@@ -8,7 +8,10 @@
 
 <div class="marquee-track">
     {% for profile in profiles %}
-        {% include 'components/profile_card.html.twig' %}
+        <div class="profile-card">
+            <h3>{{ profile.prenom }} {{ profile.nom }}</h3>
+            <p>{{ profile.tagline }}</p>
+        </div>
     {% endfor %}
 </div>
 
@@ -17,7 +20,10 @@
 <div class="row">
     {% for job in jobs %}
         <div class="col-md-4">
-            {% include 'components/job_card.html.twig' %}
+            <div class="card">
+                <h5>{{ job.titre }}</h5>
+                <p>{{ job.description|slice(0, 100) }}...</p>
+            </div>
         </div>
     {% endfor %}
 </div>
@@ -27,7 +33,10 @@
 <div class="row">
     {% for job in internships %}
         <div class="col-md-4">
-            {% include 'components/job_card.html.twig' %}
+            <div class="card">
+                <h5>{{ job.titre }}</h5>
+                <p>{{ job.description|slice(0, 100) }}...</p>
+            </div>
         </div>
     {% endfor %}
 </div>

@@ -13,15 +13,16 @@ use App\Repository\PostRepository;
 class FeedController extends AbstractController
 {
     #[Route('/feed', name: 'feed')]
-    public function index(): Response
+    public function index(
+        UserRepository $userRepo,
+        JobRepository $jobRepo,
+        PostRepository $postRepo
+    ): Response
     {
+        // login check
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
-        $userRepo = new UserRepository();
-        $jobRepo = new JobRepository();
-        $postRepo = new PostRepository();
 
         return $this->render('feed/index.html.twig', [
             'profiles' => $userRepo->findAllProfiles(),
