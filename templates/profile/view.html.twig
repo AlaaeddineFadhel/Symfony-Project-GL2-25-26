@@ -1,0 +1,260 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alumini | {{ user.insatien.prenom }} {{ user.insatien.nom }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/profils.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show m-3">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show m-3">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {# ── Header profil ── #}
+    <div class="container">
+        <div class="profile-main">
+
+            <img src="{{ user.avatarUrl ?? asset('images/icon-7797704_1280.png') }}"
+                 class="profile-pic" alt="Photo de profil">
+
+            <div class="profile-info">
+
+                <div class="profile-name-row">
+                    <h1 class="nom">{{ user.insatien.prenom }} {{ user.insatien.nom }}</h1>
+                    {% if isOwner %}
+                        <a href="{{ path('app_my_profile') }}" class="btn-edit">✏️ Modifier mon profil</a>
+                    {% endif %}
+                </div>
+
+                <div class="profile-meta">
+                    {% if user.insatien.parcours is not null %}
+                        <span class="meta-badge">
+                        {{ user.insatien.parcours.filiere.name }} · {{ user.insatien.parcours.name }}
+                    </span>
+                        <span class="meta-sep">·</span>
+                    {% endif %}
+                    <span class="meta-badge">Promo <span class="num-id">{{ user.insatien.promoYear ?? 'N/A' }}</span></span>
+                    <span class="meta-sep">·</span>
+                    <span class="meta-badge">ID <span class="num-id">{{ user.insatien.id }}</span></span>
+                </div>
+
+                {% if user.tagline %}
+                    <p class="profile-tagline">{{ user.tagline }}</p>
+                {% endif %}
+
+                <p class="profile-bio">{{ user.bio ?: 'No bio provided.' }}</p>
+
+                <div class="profile-links">
+                    {% if user.githubLink %}
+                        <a href="{{ user.githubLink }}" class="profile-link-btn" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    {% endif %}
+                    {% if user.linkedinLink %}
+                        <a href="{{ user.linkedinLink }}" class="profile-link-btn" target="_blank">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                    {% endif %}
+                    {% if user.profileLink %}
+                        <a href="{{ user.profileLink }}" class="profile-link-btn" target="_blank">
+                            <i class="fas fa-globe"></i> Portfolio
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {# ── Sections ── #}
+    <div class="container" style="max-width:900px; margin:0 auto; padding:0 20px 60px;">
+
+        {# Skills #}
+        <div class="profile-section">
+            <span class="section-title">Skills</span>
+            <div class="skills-grid">
+                {% if user.userSkills is not empty %}
+                    {% for userSkill in user.userSkills %}
+                        <span class="skill-badge">{{ userSkill.skill.name }}</span>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No skills added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Experience #}
+        <div class="profile-section">
+            <span class="section-title">Experience</span>
+            <div class="experience-list">
+                {% if user.experiences is not empty %}
+                    {% for exp in user.experiences %}
+                        <div class="experience-card">
+                            <div class="exp-icon">🏢</div>
+                            <div>
+                                <p class="exp-title">{{ exp.entreprise ?? '' }}</p>
+                                <p class="exp-meta">
+                                    {{ exp.experienceType.value | capitalize }} ·
+                                    {{ exp.dateDebut ? exp.dateDebut|date('d/m/Y') : '' }} –
+                                    {{ exp.dateFin ? exp.dateFin|date('d/m/Y') : 'Present' }}
+                                </p>
+                                {% if exp.description %}
+                                    <p class="exp-desc">{{ exp.description }}</p>
+                                {% endif %}
+                                {% if exp.lien %}
+                                    <a href="{{ exp.lien }}" target="_blank">Voir le lien</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No experience added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Projects #}
+        <div class="profile-section">
+            <span class="section-title">Projects</span>
+            {% if user.projects is not empty %}
+                {% for proj in user.projects %}
+                    <div class="experience-card">
+                        <div class="exp-icon">📁</div>
+                        <div>
+                            <p class="exp-title">{{ proj.title }}</p>
+                            <p class="exp-meta">
+                                {{ proj.dateDebut ? proj.dateDebut|date('d/m/Y') : '' }}
+                                {{ proj.dateFin ? '– ' ~ proj.dateFin|date('d/m/Y') : '' }}
+                                {% if proj.lien %}
+                                    · <a href="{{ proj.lien }}" target="_blank">Voir le projet</a>
+                                {% endif %}
+                            </p>
+                            {% if proj.description %}
+                                <p class="exp-desc">{{ proj.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No projects added yet.</p>
+            {% endif %}
+        </div>
+
+        {# Achievements #}
+        <div class="profile-section">
+            <span class="section-title">Achievements</span>
+            {% if user.achievements is not empty %}
+                {% for ach in user.achievements %}
+                    <div class="achievement-card">
+                        <span class="achievement-icon">🏆</span>
+                        <div>
+                            <p class="achievement-title">{{ ach.title }}</p>
+                            <p class="achievement-meta">
+                                {{ ach.issuer ?? '' }}
+                                {{ ach.dateObtained ? '· ' ~ ach.dateObtained|date('d/m/Y') : '' }}
+                            </p>
+                            {% if ach.description %}
+                                <p class="achievement-desc">{{ ach.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No achievements yet.</p>
+            {% endif %}
+        </div>
+
+        {# Posts #}
+        <div class="profile-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="section-title" style="margin-bottom:0; border:none;">Posts récents</span>
+                {% if isOwner %}
+                    <a href="{{ path('app_post_create') }}" class="btn btn-sm"
+                       style="background:#65171e; color:#fff; border-radius:8px;">+ Publier</a>
+                {% endif %}
+            </div>
+            {% if user.posts is not empty %}
+                {% for post in user.posts %}
+                    <div class="review-card" style="margin-bottom:12px;">
+                        <div class="review-time">{{ post.createdAt|date('d/m/Y H:i') }}</div>
+                        <div class="review-text">{{ post.content }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No posts yet.</p>
+            {% endif %}
+        </div>
+
+        {# Recommendations #}
+        <div class="profile-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="section-title" style="margin-bottom:0; border:none;">Recommendations</span>
+                {% if not isOwner %}
+                    <button class="btn btn-sm"
+                            style="background:#65171e; color:#fff; border-radius:8px;"
+                            data-bs-toggle="modal" data-bs-target="#recommendModal">
+                        + Recommander
+                    </button>
+                {% endif %}
+            </div>
+            {% if recommendations is not empty %}
+                {% for rec in recommendations %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="{{ rec.fromUser.avatarUrl ?? asset('images/icon-7797704_1280.png') }}"
+                                 alt="avatar"
+                                 style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
+                            <div>
+                                <div class="review-name">
+                                    {{ rec.fromUser.insatien.prenom }} {{ rec.fromUser.insatien.nom }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-text">{{ rec.texte }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No recommendations yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    {# Modal Recommandation #}
+    {% if not isOwner %}
+        <div class="modal fade" id="recommendModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">✍️ Write a Recommendation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="POST" action="{{ path('app_profile_recommend', {'id': user.id}) }}">
+                        <div class="modal-body">
+                        <textarea name="texte" class="form-control" rows="4"
+                                  placeholder="Share your experience with this person..."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary"
+                                    style="background:#65171e; border-color:#65171e;">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

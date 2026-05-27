@@ -1,0 +1,504 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile | Alumini{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/profils.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/myprofile.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show m-3">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show m-3">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {# ── Header profil ── #}
+    <div class="container">
+        <div class="profile-main">
+
+            <img src="{{ user.avatarUrl ?? asset('images/icon-7797704_1280.png') }}"
+                 class="profile-pic" id="pageAvatarImg" alt="Photo de profil">
+
+            <div class="profile-info">
+
+                <div class="profile-name-row">
+                    <h1 class="nom">{{ user.insatien.prenom }} {{ user.insatien.nom }}</h1>
+                    <button type="button" class="btn-edit"
+                            data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        ✏️ Modifier
+                    </button>
+                </div>
+
+                <div class="profile-meta">
+                    {% if user.insatien.parcours is not null %}
+                        <span class="meta-badge">
+                        {{ user.insatien.parcours.filiere.name }} · {{ user.insatien.parcours.name }}
+                    </span>
+                        <span class="meta-sep">·</span>
+                    {% endif %}
+                    <span class="meta-badge">Promo <span class="num-id">{{ user.insatien.promoYear ?? 'N/A' }}</span></span>
+                    <span class="meta-sep">·</span>
+                    <span class="meta-badge">ID <span class="num-id">{{ user.insatien.id }}</span></span>
+                </div>
+
+                {% if user.tagline %}
+                    <p class="profile-tagline">{{ user.tagline }}</p>
+                {% endif %}
+
+                <p class="profile-bio">{{ user.bio ?: 'No bio provided.' }}</p>
+
+                <div class="profile-links">
+                    {% if user.githubLink %}
+                        <a href="{{ user.githubLink }}" class="profile-link-btn" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    {% endif %}
+                    {% if user.linkedinLink %}
+                        <a href="{{ user.linkedinLink }}" class="profile-link-btn" target="_blank">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                    {% endif %}
+                    {% if user.profileLink %}
+                        <a href="{{ user.profileLink }}" class="profile-link-btn" target="_blank">
+                            <i class="fas fa-globe"></i> Portfolio
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {# ── Sections ── #}
+    <div class="container" style="max-width:900px; margin:0 auto; padding:0 20px 60px;">
+
+        {# Skills #}
+        <div class="profile-section">
+            <span class="section-title">Skills</span>
+            <div class="skills-grid">
+                {% if user.userSkills is not empty %}
+                    {% for userSkill in user.userSkills %}
+                        <span class="skill-badge">{{ userSkill.skill.name }}</span>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No skills yet. Click "Modifier" to add some.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Experience #}
+        <div class="profile-section">
+            <span class="section-title">Experience</span>
+            <div class="experience-list">
+                {% if user.experiences is not empty %}
+                    {% for exp in user.experiences %}
+                        <div class="experience-card">
+                            <div class="exp-icon">🏢</div>
+                            <div>
+                                <p class="exp-title">{{ exp.entreprise ?? '' }}</p>
+                                <p class="exp-meta">
+                                    {{ exp.experienceType.value | capitalize }} ·
+                                    {{ exp.dateDebut ? exp.dateDebut|date('d/m/Y') : '' }} –
+                                    {{ exp.dateFin ? exp.dateFin|date('d/m/Y') : 'Present' }}
+                                </p>
+                                {% if exp.description %}
+                                    <p class="exp-desc">{{ exp.description }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No experience yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Projects #}
+        <div class="profile-section">
+            <span class="section-title">Projects</span>
+            {% if user.projects is not empty %}
+                {% for proj in user.projects %}
+                    <div class="experience-card">
+                        <div class="exp-icon">📁</div>
+                        <div>
+                            <p class="exp-title">{{ proj.title }}</p>
+                            {% if proj.description %}
+                                <p class="exp-desc">{{ proj.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No projects yet.</p>
+            {% endif %}
+        </div>
+
+        {# Achievements #}
+        <div class="profile-section">
+            <span class="section-title">Achievements</span>
+            {% if user.achievements is not empty %}
+                {% for ach in user.achievements %}
+                    <div class="achievement-card">
+                        <span class="achievement-icon">🏆</span>
+                        <div>
+                            <p class="achievement-title">{{ ach.title }}</p>
+                            <p class="achievement-meta">{{ ach.issuer ?? '' }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No achievements yet.</p>
+            {% endif %}
+        </div>
+
+        {# Posts #}
+        <div class="profile-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="section-title" style="margin-bottom:0; border:none;">Posts récents</span>
+                <a href="{{ path('app_post_create') }}" class="btn btn-sm"
+                   style="background:#65171e; color:#fff; border-radius:8px;">+ Publier</a>
+            </div>
+            {% if user.posts is not empty %}
+                {% for post in user.posts %}
+                    <div class="review-card" style="margin-bottom:12px;">
+                        <div class="review-time">{{ post.createdAt|date('d/m/Y H:i') }}</div>
+                        <div class="review-text">{{ post.content }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No posts yet.</p>
+            {% endif %}
+        </div>
+
+        {# Recommendations reçues #}
+        <div class="profile-section">
+            <span class="section-title">Recommendations reçues</span>
+            {% if recommendations is not empty %}
+                {% for rec in recommendations %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="{{ rec.fromUser.avatarUrl ?? asset('images/icon-7797704_1280.png') }}"
+                                 alt="avatar"
+                                 style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
+                            <div>
+                                <div class="review-name">
+                                    {{ rec.fromUser.insatien.prenom }} {{ rec.fromUser.insatien.nom }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-text">{{ rec.texte }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No recommendations yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    {# ══════════════════════════════════════════
+   MODAL EDIT PROFIL
+══════════════════════════════════════════ #}
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width:680px;">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">✏️ Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    {# Avatar #}
+                    <div class="modal-avatar-row">
+                        <div class="modal-avatar">
+                            <img src="{{ user.avatarUrl ?? asset('images/icon-7797704_1280.png') }}"
+                                 class="profile-pic" id="modalAvatarImg">
+                            <div class="avatar-edit-btn" title="Change photo"
+                                 onclick="document.getElementById('avatarUpload').click()">
+                                <input type="file" id="avatarUpload" style="display:none" accept="image/*"
+                                       onchange="uploadAvatarImage(event)">
+                                <i class="bi bi-camera-fill"></i>
+                            </div>
+                        </div>
+                        <div class="modal-avatar-info">
+                            <div class="name" id="modalDisplayName">
+                                {{ user.insatien.prenom }} {{ user.insatien.nom }}
+                            </div>
+                            <div class="role" id="modalDisplayTagline">
+                                {{ user.tagline ?: 'Add a tagline' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Identité #}
+                    <div class="modal-section">
+                        <div class="modal-section-title"><i class="bi bi-person"></i> Identity</div>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" id="firstName" class="form-control"
+                                       value="{{ user.insatien.prenom }}">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" id="lastName" class="form-control"
+                                       value="{{ user.insatien.nom }}">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">INSAT ID</label>
+                                <input type="text" id="insatienId" class="form-control readonly-field"
+                                       value="{{ user.insatien.id }}" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Promo Year</label>
+                                <input type="text" id="promoYear" class="form-control"
+                                       value="{{ user.insatien.promoYear ?? '' }}">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Filiere</label>
+                                <select id="filiereSelect" class="form-select">
+                                    <option value="">Select filiere</option>
+                                    {% for filiere in filieres %}
+                                        <option value="{{ filiere.id }}"
+                                            {% if user.insatien.parcours is not null and
+                                                user.insatien.parcours.filiere is not null and
+                                                user.insatien.parcours.filiere.id == filiere.id %}
+                                        selected
+                                            {% endif %}>
+                                            {{ filiere.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Parcours</label>
+                                <select id="parcoursSelect" class="form-select">
+                                    <option value="">Select parcours</option>
+                                    {% for parc in parcours %}
+                                        <option value="{{ parc.id }}"
+                                                data-filiere-id="{{ parc.filiere ? parc.filiere.id : '' }}"
+                                            {% if user.insatien.parcours is not null and
+                                                user.insatien.parcours.id == parc.id %}
+                                        selected
+                                            {% endif %}>
+                                            {{ parc.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Tagline</label>
+                                <input type="text" id="editTagline" class="form-control"
+                                       value="{{ user.tagline ?? '' }}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Bio</label>
+                                <textarea id="editBio" class="form-control" rows="3">{{ user.bio ?? '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Links #}
+                    <div class="modal-section">
+                        <div class="modal-section-title"><i class="bi bi-link-45deg"></i> Links</div>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label"><i class="bi bi-github"></i> GitHub</label>
+                                <input type="text" id="githubLink" class="form-control"
+                                       value="{{ user.githubLink ?? '' }}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label"><i class="bi bi-linkedin"></i> LinkedIn</label>
+                                <input type="text" id="linkedinLink" class="form-control"
+                                       value="{{ user.linkedinLink ?? '' }}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label"><i class="bi bi-globe"></i> Portfolio / CV</label>
+                                <input type="text" id="editProfileLink" class="form-control"
+                                       value="{{ user.profileLink ?? '' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Skills #}
+                    <div class="modal-section">
+                        <div class="modal-section-title"><i class="bi bi-bag-check"></i> Skills</div>
+                        <div class="skills-chips" id="skills-chips"
+                             data-skills="{{ user.userSkills|map(us => us.skill.name)|json_encode }}">
+                        </div>
+                        <div class="skill-input-row">
+                            <input type="text" id="skillInput" class="form-control"
+                                   placeholder="Add a skill (e.g. Java, React...)"
+                                   onkeydown="if(event.key==='Enter'){event.preventDefault();addSkillChip();}">
+                            <button type="button" class="btn-add btn-add-inline" onclick="addSkillChip()">+ Add</button>
+                        </div>
+                    </div>
+
+                    {# Experience #}
+                    <div class="modal-section">
+                        <div class="modal-section-title"><i class="bi bi-briefcase"></i> Experience</div>
+                        <div id="experience-list"
+                             data-experiences="{{ user.experiences|map(e => {
+                                 'entreprise': e.entreprise,
+                                 'experience_type': e.experienceType.value,
+                                 'date_debut': e.dateDebut ? e.dateDebut|date('Y-m-d') : '',
+                                 'date_fin': e.dateFin ? e.dateFin|date('Y-m-d') : '',
+                                 'description': e.description,
+                                 'lien': e.lien
+                             })|json_encode }}">
+                        </div>
+                        <button type="button" class="btn-add" onclick="addExperience()">+ Add Experience</button>
+                    </div>
+
+                    {# Projects #}
+                    <div class="modal-section">
+                        <div class="modal-section-title"><i class="bi bi-folder"></i> Projects</div>
+                        <div id="projects-list"
+                             data-projects="{{ user.projects|map(p => {
+                                 'title': p.title,
+                                 'description': p.description,
+                                 'date_debut': p.dateDebut ? p.dateDebut|date('Y-m-d') : '',
+                                 'date_fin': p.dateFin ? p.dateFin|date('Y-m-d') : '',
+                                 'lien': p.lien
+                             })|json_encode }}">
+                        </div>
+                        <button type="button" class="btn-add" onclick="addProject()">+ Add Project</button>
+                    </div>
+
+                    {# Achievements #}
+                    <div class="modal-section">
+                        <div class="modal-section-title"><i class="bi bi-award"></i> Achievements</div>
+                        <div id="achievements-list"
+                             data-achievements="{{ user.achievements|map(a => {
+                                 'title': a.title,
+                                 'issuer': a.issuer,
+                                 'date_obtained': a.dateObtained ? a.dateObtained|date('Y-m-d') : '',
+                                 'achievement_type': a.achievementType.value,
+                                 'description': a.description,
+                                 'lien': a.lien
+                             })|json_encode }}">
+                        </div>
+                        <button type="button" class="btn-add" onclick="addAchievement()">+ Add Achievement</button>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-save" id="saveBtn"
+                            onclick="saveProfile()">Save Changes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/myprofile.js') }}"></script>
+    <script>
+        // Update avatar upload URL to Symfony route
+        async function uploadAvatarImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('avatar', file);
+            try {
+                const res = await fetch('{{ path('app_profile_avatar') }}', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.ok && data.avatarUrl) {
+                    document.getElementById('modalAvatarImg').src = data.avatarUrl;
+                    document.getElementById('pageAvatarImg').src = data.avatarUrl;
+                } else {
+                    alert('Upload failed: ' + (data.message || 'Unknown error'));
+                }
+            } catch (e) {
+                alert('Network error during upload.');
+            }
+        }
+
+        // Update saveProfile to post to Symfony route
+        function saveProfile() {
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ path('app_profile_save') }}';
+
+            function addField(name, value) {
+                const input = document.createElement('input');
+                input.type  = 'hidden';
+                input.name  = name;
+                input.value = value ?? '';
+                form.appendChild(input);
+            }
+
+            addField('prenom',        document.getElementById('firstName')?.value.trim());
+            addField('nom',           document.getElementById('lastName')?.value.trim());
+            addField('bio',           document.getElementById('editBio')?.value.trim());
+            addField('promo_year',    document.getElementById('promoYear')?.value.trim());
+            addField('parcours_id',   document.getElementById('parcoursSelect')?.value);
+            addField('tagline',       document.getElementById('editTagline')?.value.trim());
+            addField('github_link',   document.getElementById('githubLink')?.value.trim());
+            addField('linkedin_link', document.getElementById('linkedinLink')?.value.trim());
+            addField('profile_link',  document.getElementById('editProfileLink')?.value.trim());
+
+            document.querySelectorAll('#skills-chips .skill-chip').forEach(chip => {
+                if (chip.dataset.skill) addField('skills[]', chip.dataset.skill);
+            });
+
+            document.querySelectorAll('#experience-list .item-row').forEach((row, i) => {
+                addField(`experiences[${i}][entreprise]`,      row.querySelector('.exp-company')?.value.trim());
+                addField(`experiences[${i}][experience_type]`, row.querySelector('.exp-type')?.value);
+                addField(`experiences[${i}][date_debut]`,      row.querySelector('.exp-start')?.value);
+                addField(`experiences[${i}][date_fin]`,        row.querySelector('.exp-end')?.value);
+                addField(`experiences[${i}][description]`,     row.querySelector('.exp-desc')?.value.trim());
+                addField(`experiences[${i}][lien]`,            row.querySelector('.exp-link')?.value.trim());
+            });
+
+            document.querySelectorAll('#projects-list .item-row').forEach((row, i) => {
+                addField(`projects[${i}][title]`,       row.querySelector('.proj-title')?.value.trim());
+                addField(`projects[${i}][description]`, row.querySelector('.proj-desc')?.value.trim());
+                addField(`projects[${i}][date_debut]`,  row.querySelector('.proj-start')?.value);
+                addField(`projects[${i}][date_fin]`,    row.querySelector('.proj-end')?.value);
+                addField(`projects[${i}][lien]`,        row.querySelector('.proj-link')?.value.trim());
+            });
+
+            document.querySelectorAll('#achievements-list .item-row').forEach((row, i) => {
+                addField(`achievements[${i}][title]`,            row.querySelector('.ach-title')?.value.trim());
+                addField(`achievements[${i}][issuer]`,           row.querySelector('.ach-issuer')?.value.trim());
+                addField(`achievements[${i}][date_obtained]`,    row.querySelector('.ach-date')?.value);
+                addField(`achievements[${i}][achievement_type]`, row.querySelector('.ach-type')?.value);
+                addField(`achievements[${i}][description]`,      row.querySelector('.ach-desc')?.value.trim());
+                addField(`achievements[${i}][lien]`,             row.querySelector('.ach-link')?.value.trim());
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+{% endblock %}
+
+
