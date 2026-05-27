@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\InsatienRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Trait\CreatedAtTrait;
 
 #[ORM\Entity(repositoryClass: InsatienRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Insatien
 {
+    use CreatedAtTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

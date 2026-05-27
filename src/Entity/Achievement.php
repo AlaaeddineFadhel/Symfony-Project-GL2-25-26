@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Enum\ExperienceType;
-use App\Repository\ExperienceRepository;
+use App\Enum\AchievementType;
+use App\Repository\AchievementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 use App\Trait\CreatedAtTrait;
 
-#[ORM\Entity(repositoryClass: ExperienceRepository::class)]
+#[ORM\Entity(repositoryClass: AchievementRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Experience
+class Achievement
 {
     use CreatedAtTrait;
     #[ORM\Id]
@@ -18,20 +19,21 @@ class Experience
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'experiences')]
+    #[ORM\ManyToOne(inversedBy: 'achievements')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $dateDebut = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $dateFin = null;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $entreprise = null;
+    private ?string $issuer = null;
 
-    #[ORM\Column(enumType: ExperienceType::class)]
-    private ?ExperienceType $experienceType = null;
+    #[ORM\Column(enumType: AchievementType::class)]
+    private ?AchievementType $achievementType = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $dateObtained = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $lien = null;
@@ -56,50 +58,50 @@ class Experience
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTime
+    public function getTitle(): ?string
     {
-        return $this->dateDebut;
+        return $this->title;
     }
 
-    public function setDateDebut(?\DateTime $dateDebut): static
+    public function setTitle(string $title): static
     {
-        $this->dateDebut = $dateDebut;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getDateFin(): ?\DateTime
+    public function getIssuer(): ?string
     {
-        return $this->dateFin;
+        return $this->issuer;
     }
 
-    public function setDateFin(?\DateTime $dateFin): static
+    public function setIssuer(?string $issuer): static
     {
-        $this->dateFin = $dateFin;
+        $this->issuer = $issuer;
 
         return $this;
     }
 
-    public function getEntreprise(): ?string
+    public function getAchievementType(): ?AchievementType
     {
-        return $this->entreprise;
+        return $this->achievementType;
     }
 
-    public function setEntreprise(?string $entreprise): static
+    public function setAchievementType(AchievementType $achievementType): static
     {
-        $this->entreprise = $entreprise;
+        $this->achievementType = $achievementType;
 
         return $this;
     }
 
-    public function getExperienceType(): ?ExperienceType
+    public function getDateObtained(): ?\DateTime
     {
-        return $this->experienceType;
+        return $this->dateObtained;
     }
 
-    public function setExperienceType(ExperienceType $experienceType): static
+    public function setDateObtained(?\DateTime $dateObtained): static
     {
-        $this->experienceType = $experienceType;
+        $this->dateObtained = $dateObtained;
 
         return $this;
     }
