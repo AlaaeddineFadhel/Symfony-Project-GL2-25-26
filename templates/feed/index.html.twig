@@ -19,10 +19,18 @@
 
 <div class="row">
     {% for job in jobs %}
-        <div class="col-md-4">
-            <div class="card">
-                <h5>{{ job.titre }}</h5>
-                <p>{{ job.description|slice(0, 100) }}...</p>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5>{{ job.titre }}</h5>
+                    <div class="text-muted small mb-2">
+                        {{ job.jobType.value }} • {{ job.jobMode.value }}
+                    </div>
+                    <p class="flex-grow-1">{{ job.description|slice(0, 100) }}...</p>
+                    <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary mt-auto">
+                        View details
+                    </a>
+                </div>
             </div>
         </div>
     {% endfor %}
@@ -32,10 +40,18 @@
 
 <div class="row">
     {% for job in internships %}
-        <div class="col-md-4">
-            <div class="card">
-                <h5>{{ job.titre }}</h5>
-                <p>{{ job.description|slice(0, 100) }}...</p>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5>{{ job.titre }}</h5>
+                    <div class="text-muted small mb-2">
+                        {{ job.jobType.value }} • {{ job.jobMode.value }}
+                    </div>
+                    <p class="flex-grow-1">{{ job.description|slice(0, 100) }}...</p>
+                    <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary mt-auto">
+                        View details
+                    </a>
+                </div>
             </div>
         </div>
     {% endfor %}

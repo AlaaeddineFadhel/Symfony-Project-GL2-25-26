@@ -11,24 +11,21 @@ use App\Repository\JobRepository;
 class JobDetailController extends AbstractController
 {
     #[Route('/job/{id}', name: 'job_detail')]
-    public function show(int $id): Response
+    public function show(int $id, JobRepository $jobRepo): Response
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('app_login');
         }
 
-    
-        $jobRepo = new JobRepository();
-
-
-        $job = $jobRepo->findById($id);
+        $job = $jobRepo->find($id);
 
         if (!$job) {
             throw $this->createNotFoundException('Job not found');
         }
-        $salaryMin = $job->salary_min ?? null;
-        $salaryMax = $job->salary_max ?? null;
-        $currency  = $job->currency ?: 'TND';
+
+        $salaryMin = $job->getSalaryMin();
+        $salaryMax = $job->getSalaryMax();
+        $currency  = $job->getCurrency() ?: 'TND';
 
         if ($salaryMin === null && $salaryMax === null) {
             $salaryText = 'Not specified';
@@ -43,20 +40,18 @@ class JobDetailController extends AbstractController
             $salaryText = number_format((float)$salaryMax, 2) . ' ' . $currency;
         }
 
-        $experienceText = $job->req_experience === null
+        $experienceText = $job->getReqExperience() === null
             ? 'Not specified'
-            : $job->req_experience . ' years';
+            : $job->getReqExperience() . ' years';
 
-        $countryText = $job->country_name ?: 'Not specified';
-        $cityText    = $job->city_name ?: 'Not specified';
+        $countryText = $job->getCountry()?->getName() ?: 'Not specified';
+        $cityText    = $job->getCity()?->getName() ?: 'Not specified';
 
-        $publicationText = $job->date_publication ?: 'Not specified';
-        $deadlineText    = $job->deadline ?: 'Not specified';
-
+        $publicationText = $job->getDatePublication()?->format('Y-m-d') ?: 'Not specified';
+        $deadlineText    = $job->getDeadline()?->format('Y-m-d') ?: 'Not specified';
 
         return $this->render('job/jobdetail.html.twig', [
             'job' => $job,
-
             'salaryText' => $salaryText,
             'experienceText' => $experienceText,
             'countryText' => $countryText,

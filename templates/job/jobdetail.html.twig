@@ -1,21 +1,47 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Job details | {{ job.titre }}{% endblock %}
+
 {% block body %}
 
 <div class="container py-4">
 
-    <div class="card">
+    <div class="card shadow-sm">
         <div class="card-body">
 
-            <h1>{{ job.titre }}</h1>
-            <h5>{{ job.entreprise }}</h5>
+            <h1 class="mb-1">{{ job.titre }}</h1>
+            <h5 class="text-muted mb-3">{{ job.entreprise ?: 'Company not specified' }}</h5>
 
-            <hr>
+            <div class="mb-3">
+                <span class="badge bg-secondary">{{ job.jobType.value }}</span>
+                <span class="badge bg-secondary">{{ job.jobMode.value }}</span>
+            </div>
 
-            <p>{{ job.description }}</p>
+            <ul class="list-unstyled mb-4">
+                <li><strong>Location:</strong> {{ countryText }}, {{ cityText }}</li>
+                <li><strong>Experience:</strong> {{ experienceText }}</li>
+                <li><strong>Salary:</strong> {{ salaryText }}</li>
+                <li><strong>Published:</strong> {{ publicationText }}</li>
+                <li><strong>Deadline:</strong> {{ deadlineText }}</li>
+            </ul>
 
-            <a href="{{ job.application_link }}" class="btn btn-primary">
-                Apply
+            <p class="mb-4">{{ job.description }}</p>
+
+            {% if job.companyLink %}
+                <p class="mb-2">
+                    <strong>Company website:</strong>
+                    <a href="{{ job.companyLink }}" target="_blank" rel="noopener">{{ job.companyLink }}</a>
+                </p>
+            {% endif %}
+
+            {% if job.applicationLink %}
+                <a href="{{ job.applicationLink }}" target="_blank" rel="noopener" class="btn btn-primary me-2">
+                    Apply
+                </a>
+            {% endif %}
+
+            <a href="{{ path('jobs') }}" class="btn btn-outline-secondary">
+                Back to jobs
             </a>
 
         </div>

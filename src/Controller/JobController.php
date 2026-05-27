@@ -12,14 +12,12 @@ use App\Repository\JobRepository;
 class JobController extends AbstractController
 {
     #[Route('/jobs', name: 'jobs')]
-    public function index(Request $request): Response
+    public function index(Request $request, JobRepository $jobRepo): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-
-        $jobRepo = new JobRepository();
         $title   = $request->query->get('title', '');
         $country = $request->query->get('country', '');
         $city    = $request->query->get('city', '');
@@ -31,7 +29,6 @@ class JobController extends AbstractController
 
         $salary  = $request->query->get('salary', 0);
 
-        // dataa
         $jobs = $jobRepo->findFiltered(
             $title,
             $country,
@@ -42,6 +39,7 @@ class JobController extends AbstractController
             $onsite,
             $hybrid
         );
+
         return $this->render('job/index.html.twig', [
             'jobs'    => $jobs,
             'title'   => $title,
