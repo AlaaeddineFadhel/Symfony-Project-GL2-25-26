@@ -16,11 +16,15 @@ class PostController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    #[Route('/post/create', name: 'app_post_create', methods: ['POST'])]
+    #[Route('/post/create', name: 'app_post_create', methods: ['GET', 'POST'])]
     public function create(Request $request): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
+
+        if ($request->isMethod('GET')) {
+            return $this->render('post/create.html.twig');
+        }
 
         // Get the text from a textarea (make sure your feed/post modal has name="content")
         $content = $request->request->get('content');

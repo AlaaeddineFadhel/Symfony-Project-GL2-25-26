@@ -6,6 +6,33 @@
 
 <h1>Meet INSATiens</h1>
 
+{# Floating create post button + modal for logged in users #}
+{% if app.user %}
+    <div style="position:fixed; right:24px; bottom:24px; z-index:1050;">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal">+ Post</button>
+    </div>
+
+    <div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Créer un post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="{{ path('app_post_create') }}">
+                    <div class="modal-body">
+                        <textarea name="content" class="form-control" rows="4" placeholder="Share an update..." required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
 <div class="marquee-track">
     {% for profile in profiles %}
         <div class="profile-card">

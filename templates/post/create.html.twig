@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Post{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width:800px; margin-top:40px;">
+    <h2>Create a new post</h2>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <form method="POST" action="{{ path('app_post_create') }}">
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea id="content" name="content" class="form-control" rows="6" required></textarea>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('app_feed_test') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Publish</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
