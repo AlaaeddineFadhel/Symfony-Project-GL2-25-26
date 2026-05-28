@@ -1,0 +1,292 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(90deg, #ffffff, #62151b39, #ffffff, #62151b39);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+/*animation background goes from left to right*/
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    position: relative;
+    width: 900px;
+    height: 550px;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.form-box {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    transition: all 0.6s ease-in-out;
+}
+
+.form-box.login {
+    left: 0;
+    z-index: 2;
+}
+
+.form-box.register {
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+}
+
+/* etat actif du conteneur */
+.container.active .form-box.login {
+    left: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .form-box.register {
+    left: 50%;
+    opacity: 1;
+    z-index: 2;
+}
+
+form {
+    width: 100%;
+}
+
+.container h1 {
+    font-size: 32px;
+    margin: -10px 0 5px;
+    color: #333;
+    font-family: 'Georgia', serif;     
+    text-align: center;
+    font-weight: bold; 
+}
+
+.form-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    font-family: 'Georgia', serif;  
+    text-align: center;
+}
+
+.input-field {
+    position: relative;
+    margin: 20px 0;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 13px 50px 13px 20px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    border: none;
+    outline: none; 
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.input-field input:focus {
+    background: #e8e8e8;
+}
+
+.input-field input::placeholder {
+    color: #888;
+    font-weight: 400;
+}
+
+.input-field i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+}
+
+.forgetpass-link {
+    margin: -15px 0 15px;
+    text-align: right;
+}
+
+.forgetpass-link a {
+    font-size: 14.5px;
+    color: #3e769e;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgetpass-link a:hover {
+    color: #2c5875;
+    text-decoration: underline;
+}
+
+.submitbtn {
+    width: 100%;
+    height: 48px;
+    background: #6E6E86;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.submitbtn:hover {
+    background: #5b5b73;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.submitbtn:active {
+    transform: translateY(0);
+}
+
+.container p {
+    font-size: 14.5px;
+    margin: 15px 0;
+    color: #666;
+    text-align: center;
+}
+
+.socialmedia-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.socialmedia-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+    color: #333;
+    text-decoration: none;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.socialmedia-icons a:hover {
+    color: #5d5d7a;
+    border-color: #5d5d7a;
+    transform: translateY(-3px);
+}
+
+.name-row {
+    display: flex;
+    gap: 8px; 
+    margin: 20px 0;   
+}
+
+.name-row .input-field {
+    flex: 1; 
+    margin: 0;       
+}
+
+/* toggle box styles */
+.toggle-box {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.container.active .toggle-box {
+    left: 0;
+}
+
+.toggle-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+    color: #fff;
+    transition: all 0.6s ease-in-out;
+}
+
+.toggle-left {
+    background: linear-gradient(135deg, #65171e  0%, #62151b 100%);
+    left: -100%;
+}
+
+.toggle-right {
+    background: linear-gradient(135deg, #65171e  0%, #62151b 100%);
+    left: 0;
+}
+
+.container.active .toggle-left {
+    left: 0;
+}
+
+.container.active .toggle-right {
+    left: 100%;
+}
+
+.toggle-panel h1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.toggle-panel p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.toggle-btn {
+    padding: 12px 45px;
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: #fff;
+    color: #b2103b;
+    transform: scale(1.05);
+}
+
+.toggle-btn:active {
+    transform: scale(0.98);
+}
