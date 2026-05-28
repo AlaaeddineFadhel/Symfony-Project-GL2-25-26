@@ -32,6 +32,11 @@
         </div>
     </div>
 {% endif %}
+                {% block css %}
+                    {{ parent() }}
+                    <link rel="stylesheet" href="{{ asset('styles/feed.css') }}">
+                {% endblock %}
+
 
 <div class="marquee-track">
     {% for profile in profiles %}
