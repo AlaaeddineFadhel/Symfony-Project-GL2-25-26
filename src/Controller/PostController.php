@@ -16,9 +16,14 @@ class PostController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    #[Route('/post/create', name: 'app_post_create', methods: ['POST'])]
+    #[Route('/post/create', name: 'app_post_create', methods: ['GET', 'POST'])]
     public function create(Request $request): Response
     {
+        // Render the standalone create form on GET
+        if ($request->isMethod('GET')) {
+            return $this->render('post/create.html.twig');
+        }
+
         /** @var User $currentUser */
         $currentUser = $this->getUser();
 

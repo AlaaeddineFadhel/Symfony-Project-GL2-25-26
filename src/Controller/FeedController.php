@@ -32,10 +32,9 @@ class FeedController extends AbstractController
         ]);
     }
 //zeyda ?
-    #[Route('/')]
+    #[Route('/feed-test', name: 'app_feed_test')]
     public function test(): Response
     {
-
         return $this->render('base.html.twig');
     }
 }
