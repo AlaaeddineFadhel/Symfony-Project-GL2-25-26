@@ -1,20 +1,8 @@
-<div class="card job-card h-100 shadow-sm">
-    <div class="card-body d-flex flex-column">
-
-        <h5>{{ job.titre }}</h5>
-
-        <div class="text-muted small mb-2">
-            {{ job.jobType.value }} • {{ job.jobMode.value }}
-        </div>
-
-        <p class="flex-grow-1">
-            {{ job.description|slice(0,110) }}...
-        </p>
-
-        <a href="{{ path('job_detail', {id: job.id}) }}"
-           class="btn btn-primary mt-auto">
-            View details
-        </a>
-
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ job.titre }}</h5>
+        <div class="text-muted small mb-2">{{ job.jobType.value }} • {{ job.jobMode.value }}</div>
+        <p class="card-text">{{ job.description|slice(0, 100) }}...</p>
+        <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary">See more</a>
     </div>
 </div>

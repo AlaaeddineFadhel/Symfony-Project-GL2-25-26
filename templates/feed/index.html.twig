@@ -1,17 +1,16 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Feed{% endblock %}
-
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('styles/feed.css') }}">
+{% endblock %}
 {% block body %}
+<div class="container-fluid px-4">
 
-<h1>Meet INSATiens</h1>
-
-{# Floating create post button + modal for logged in users #}
-{% if app.user %}
+    {# Floating create post button + modal #}
+    {% if app.user %}
     <div style="position:fixed; right:24px; bottom:24px; z-index:1050;">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal">+ Post</button>
     </div>
-
     <div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -31,57 +30,91 @@
             </div>
         </div>
     </div>
-{% endif %}
+    {% endif %}
 
-<div class="marquee-track">
-    {% for profile in profiles %}
-        <div class="profile-card">
-            <h3>{{ profile.insatien.prenom }} {{ profile.insatien.nom }}</h3>
-            <p>{{ profile.tagline }}</p>
-        </div>
-    {% endfor %}
-</div>
-
-<h1>Jobs</h1>
-
-<div class="row">
-    {% for job in jobs %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <h5>{{ job.titre }}</h5>
-                    <div class="text-muted small mb-2">
-                        {{ job.jobType.value }} • {{ job.jobMode.value }}
-                    </div>
-                    <p class="flex-grow-1">{{ job.description|slice(0, 100) }}...</p>
-                    <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary mt-auto">
-                        View details
-                    </a>
-                </div>
+    {# PROFILES #}
+    <h1 class="h1">Meet INSATiens</h1>
+    <div class="marquee-container">
+        <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">&#60;</button>
+        <div class="marquee-wrapper">
+            <div class="marquee-track" id="profiles">
+                {% for profile in profiles %}
+                    {{ include('components/profile_card.html.twig') }}
+                {% else %}
+                    <p>Aucun profil disponible.</p>
+                {% endfor %}
             </div>
         </div>
-    {% endfor %}
-</div>
+        <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">&#62;</button>
+    </div>
 
-<h1>Internships</h1>
-
-<div class="row">
-    {% for job in internships %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <h5>{{ job.titre }}</h5>
-                    <div class="text-muted small mb-2">
-                        {{ job.jobType.value }} • {{ job.jobMode.value }}
+    {# POSTS #}
+    <h1 class="h1">New Posts</h1>
+    <div class="marquee-container">
+        <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">&#60;</button>
+        <div class="marquee-wrapper">
+            <div class="marquee-track" id="posts">
+                {% for post in posts %}
+                <div class="card feed-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.user.prenom }} {{ post.user.nom }}</h5>
+                        <span class="post-date text-muted small">{{ post.createdAt|date('d M Y') }}</span>
+                        <p class="card-text mt-2">{{ post.content|slice(0, 150) }}{% if post.content|length > 150 %}...{% endif %}</p>
+                        <a href="/profile/{{ post.user.id }}" class="btn btn-primary w-100">View Profile</a>
                     </div>
-                    <p class="flex-grow-1">{{ job.description|slice(0, 100) }}...</p>
-                    <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary mt-auto">
-                        View details
-                    </a>
                 </div>
+                {% else %}
+                    <p>Aucun post disponible.</p>
+                {% endfor %}
             </div>
         </div>
-    {% endfor %}
-</div>
+        <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">&#62;</button>
+    </div>
 
+    {# JOBS #}
+    <h1 class="h1">Job Offers</h1>
+    <div class="marquee-container">
+        <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">&#60;</button>
+        <div class="marquee-wrapper">
+            <div class="marquee-track" id="jobs">
+                {% for job in jobs %}
+                    {{ include('components/job_card.html.twig') }}
+                {% else %}
+                    <p>Aucune offre disponible.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">&#62;</button>
+    </div>
+
+    {# INTERNSHIPS #}
+    <h1 class="h1">Internship Offers</h1>
+    <div class="marquee-container">
+        <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">&#60;</button>
+        <div class="marquee-wrapper">
+            <div class="marquee-track" id="internships">
+                {% for job in internships %}
+                    {{ include('components/job_card.html.twig') }}
+                {% else %}
+                    <p>Aucun stage disponible.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">&#62;</button>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+function scrollMarquee(button, direction) {
+    const container = button.parentElement;
+    const wrapper = container.querySelector('.marquee-wrapper');
+    wrapper.scrollTo({
+        left: wrapper.scrollLeft + direction * 320,
+        behavior: 'smooth'
+    });
+}
+</script>
 {% endblock %}

@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Login{% endblock %}
-
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('styles/login.css') }}">
+{% endblock %}
 {% block body %}
 <div class="container" style="max-width:520px; margin-top:48px;">
     <h2 class="mb-4">Sign in</h2>
