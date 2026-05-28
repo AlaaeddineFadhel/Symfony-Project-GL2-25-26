@@ -21,7 +21,7 @@ class FeedController extends AbstractController
     {
         // login check
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('feed/index.html.twig', [
