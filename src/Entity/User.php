@@ -8,10 +8,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Trait\CreatedAtTrait;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class User
+#[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use CreatedAtTrait;
     #[ORM\Id]

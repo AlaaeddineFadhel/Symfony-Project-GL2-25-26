@@ -15,6 +15,13 @@ class ContactMessagesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ContactMessages::class);
     }
+    public function save(ContactMessages $entity, bool $flush = true): void
+{
+    $this->getEntityManager()->persist($entity);
+    if ($flush) {
+        $this->getEntityManager()->flush();
+    }
+}
 
     //    /**
     //     * @return ContactMessages[] Returns an array of ContactMessages objects

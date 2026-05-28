@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alumini |Contact {% endblock %}
+
+{% block stylesheets %}
+
+   {{parent()}}
+   <link rel ="stylesheet" href="{{assets('css/contact.css)}}">
+{% endblock %}
+
+{% block body %}
+
+<!-- Hero -->
+<div class="contact-hero">
+    <h1 class="contact-hero-title">Get in <span>Touch</span></h1>
+    <p class="contact-hero-sub">A question, an idea, or just want to reconnect with your college roots? We'd love to hear from you.</p>
+</div>
+
+<!-- Main content -->
+<div class="contact-wrapper">
+
+    <!-- Left: info cards -->
+    <aside class="contact-info-col">
+
+        <div class="contact-info-card">
+            <div class="contact-info-icon">
+                <i class="bi bi-envelope-fill"></i>
+            </div>
+            <div>
+                <p class="contact-info-label">Email Us</p>
+                <a href="mailto:alumiiicontact@gmail.com" class="contact-info-value">alumiiicontact@gmail.com</a>
+                <p class="contact-info-hint">We reply within 24 hrs</p>
+            </div>
+        </div>
+
+        <div class="contact-info-card">
+            <div class="contact-info-icon">
+                <i class="bi bi-telephone-fill"></i>
+            </div>
+            <div>
+                <p class="contact-info-label">Call Us</p>
+                <a href="tel:+21612345678" class="contact-info-value">+216 99 788 043</a>
+                <p class="contact-info-hint">Office hours only</p>
+            </div>
+        </div>
+
+        <div class="contact-info-card">
+            <div class="contact-info-icon">
+                <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+                <p class="contact-info-label">Find Us</p>
+                <span class="contact-info-value">INSAT, Centre Urbain Nord<br>Tunis, Tunisia</span>
+                <p class="contact-info-hint">Mon–Fri, 9am–5pm</p>
+            </div>
+        </div>
+
+        <hr class="contact-divider">
+
+        <p class="contact-social-heading">Follow the Community</p>
+        <div class="contact-socials">
+            <a href="#" class="contact-social-pill"><i class="bi bi-linkedin me-1"></i>LinkedIn</a>
+            <a href="#" class="contact-social-pill"><i class="bi bi-instagram me-1"></i>Instagram</a>
+            <a href="#" class="contact-social-pill"><i class="bi bi-twitter-x me-1"></i>Twitter / X</a>
+            <a href="#" class="contact-social-pill"><i class="bi bi-facebook me-1"></i>Facebook</a>
+        </div>
+
+    </aside>
+
+    <!-- Right: form -->
+    <section class="contact-form-col">
+        <div class="contact-form-card">
+            {% if sent and app.flashes('contact_success') is not empty %}
+
+                <div class="contact-success">
+                    <div class="contact-success-icon">🎉</div>
+                    <h3>{{ app.flashes('contact_success')|first }}</h3>
+                    <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
+                    <a href="{{ path('app_feed') }}" class="btn contact-submit-btn mt-2">← Back to Feed</a>
+                </div>
+
+            {% else %}
+
+                <div class="contact-form-header">
+                    <h2>Send us a message</h2>
+                    <p>Fill in the form below and we will get back to you shortly.</p>
+                </div>
+
+             {% if contactForm.vars.submitted and not contactForm.vars.valid %}
+                    <div class="alert alert-danger mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Please fix the errors below before submitting.
+                    </div>
+                {% endif %}
+
+                {{ form_start(contactForm, { attr: { id: 'contactForm', novalidate: 'novalidate' } }) }}
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            {{ form_label(contactForm.firstName, 'First Name', { label_attr: { class: 'form-label' } }) }}
+                            <span class="contact-req">*</span>
+                            {{ form_widget(contactForm.firstName, {
+                                attr: { class: 'form-control contact-input' ~ (not contactForm.firstName.vars.valid ? ' is-invalid' : '') }
+                            }) }}
+                            {{ form_errors(contactForm.firstName) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(contactForm.lastName, 'Last Name', { label_attr: { class: 'form-label' } }) }}
+                            <span class="contact-req">*</span>
+                            {{ form_widget(contactForm.lastName, {
+                                attr: { class: 'form-control contact-input' ~ (not contactForm.lastName.vars.valid ? ' is-invalid' : '') }
+                            }) }}
+                            {{ form_errors(contactForm.lastName) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(contactForm.email, 'Email Address', { label_attr: { class: 'form-label' } }) }}
+                        <span class="contact-req">*</span>
+                        {{ form_widget(contactForm.email, {
+                            attr: { class: 'form-control contact-input' ~ (not contactForm.email.vars.valid ? ' is-invalid' : '') }
+                        }) }}
+                        {{ form_errors(contactForm.email) }}
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            {{ form_label(contactForm.gradYear, 'Graduation Year', { label_attr: { class: 'form-label' } }) }}
+                            {{ form_widget(contactForm.gradYear, { attr: { class: 'form-select contact-input' } }) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(contactForm.topic, 'Topic', { label_attr: { class: 'form-label' } }) }}
+                            {{ form_widget(contactForm.topic, { attr: { class: 'form-select contact-input' } }) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(contactForm.message, 'Message', { label_attr: { class: 'form-label' } }) }}
+                        <span class="contact-req">*</span>
+                        {{ form_widget(contactForm.message, {
+                            attr: { class: 'form-control contact-input' ~ (not contactForm.message.vars.valid ? ' is-invalid' : '') }
+                        }) }}
+                        {{ form_errors(contactForm.message) }}
+                    </div>
+
+                    <div class="form-check mb-4 contact-checkbox-row">
+                        {{ form_widget(contactForm.newsletter) }}
+                        {{ form_label(contactForm.newsletter, 'Keep me updated on alumni news & events', {
+                            label_attr: { class: 'form-check-label' }
+                        }) }}
+                    </div>
+
+                    <button type="submit" class="btn contact-submit-btn w-100" id="submitBtn">
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-loader d-none" id="btnLoader">
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>Sending...
+                        </span>
+                    </button>
+
+                {{ form_end(contactForm) }}
+
+            {% endif %}
+
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+ {{ parent() }}
+    <script>
+    (function () {
+        const form = document.getElementById('contactForm');
+        if (!form) return;
+
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText   = submitBtn.querySelector('.btn-text');
+        const btnLoader = document.getElementById('btnLoader');
+
+        form.addEventListener('submit', function () {
+            btnText.classList.add('d-none');
+            btnLoader.classList.remove('d-none');
+            submitBtn.disabled = true;
+        });
+
+        // Clear red border as user corrects input
+        form.querySelectorAll('.is-invalid').forEach(el => {
+            el.addEventListener('input', () => el.classList.remove('is-invalid'));
+        });
+    })();
+    </script>
+{% endblock %}
