@@ -15,7 +15,7 @@ class FeedController extends AbstractController
     #[Route('/feed', name: 'feed')]
     public function index(
         UserRepository $userRepo,
-        JobRepository $jobRepo,
+        JobRepository  $jobRepo,
         PostRepository $postRepo
     ): Response
     {
@@ -31,4 +31,5 @@ class FeedController extends AbstractController
             'posts' => $postRepo->findAllPosts(),
         ]);
     }
+
 }

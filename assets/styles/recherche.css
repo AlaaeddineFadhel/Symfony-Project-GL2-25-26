@@ -1,0 +1,132 @@
+:root {
+    --bg: #ffffff;
+    --text: #000000;
+    --card-bg: #f5f5f5;
+    --btn-bg: #65171e;
+    --btn-text: #ffffff;
+    --border: #fff9f9;
+    --range-thumb: #65171e;
+    --hover-btn: #484d62;
+
+    --gradient-1: #a30c0c;
+    --gradient-2: #ff6b6b;
+}
+
+[data-theme="dark"] {
+    --bg: #080c2d;
+    --text: #ffffff;
+    --text-primary: #f1f5f9;
+    --card-bg: #16192e;
+    --btn-bg: #602626;
+    --btn-text: #ffffff;
+    --border: #ffffff;
+    --range-thumb: #5d1c1c;
+    --hover-btn: #455470;
+
+    --gradient-1: #080c2d;
+    --gradient-2: #1a1f4a;
+}
+
+[data-theme="dark"] .text-muted {
+    color: #a0a8c0 !important;
+}
+
+.btn-primary {
+    background-color: var(--btn-bg) !important;
+    border-color: var(--btn-bg) !important;
+    color: var(--btn-text);
+}
+
+.btn-primary:hover {
+    background-color: var(--hover-btn) !important;
+    border-color: var(--hover-btn) !important;
+}
+
+#search_button {
+    color: var(--btn-bg) !important;
+    background-color: transparent !important;
+}
+
+#search_button:hover {
+    background-color: var(--btn-bg) !important;
+    color: var(--btn-text) !important;
+}
+
+.pagination .page-link {
+    background-color: transparent !important;
+    color: var(--btn-bg) !important;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--btn-bg) !important;
+    color: white !important;
+}
+
+#filter_dropdown {
+    background-color: var(--card-bg) !important;
+    color: var(--text) !important;
+    border: 2px solid var(--border) !important;
+}
+
+#filter_dropdown:focus {
+    border-color: var(--btn-bg) !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25) !important;
+}
+
+.result-card {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    display: block;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.result-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(101, 23, 30, 0.18) !important;
+    border-color: var(--btn-bg) !important;
+}
+
+.result-card:active {
+    transform: scale(0.98);
+}
+
+.avatar, .avatar-fallback {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.avatar-fallback {
+    background: var(--btn-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--btn-text);
+}
+
+.skill-badge {
+    background: rgba(101, 23, 30, 0.1) !important;
+    color: var(--btn-bg) !important;
+    font-weight: 500;
+}
+
+.promo-badge {
+    background: rgba(101, 23, 30, 0.07) !important;
+    color: var(--btn-bg) !important;
+}
+
+.arrow-icon {
+    opacity: 0;
+    transition: opacity 0.15s;
+    color: var(--btn-bg);
+    font-size: 13px;
+}
+
+.result-card:hover .arrow-icon {
+    opacity: 1;
+}
