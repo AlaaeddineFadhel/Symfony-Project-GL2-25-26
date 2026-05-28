@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alumini | Recherche{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset("styles/recherche.css") }}">
+{% endblock %}
+{% block body %}
+    <div class="container mt-4">
+        <br>
+        <br>
+        <div class="container mt-4">
+
+            {{ form_start(form, { attr: { class: 'mb-4' } }) }}
+            <div class="row justify-content-center align-items-center g-2">
+
+                <div class="col-12 col-md-6 col-lg-7">
+                    {{ form_widget(form.query) }}
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    {{ form_widget(form.filter) }}
+                </div>
+
+                <div class="col-6 col-md-3 col-lg-2">
+                    {{ form_widget(form.submit) }}
+                </div>
+
+            </div>
+            {{ form_end(form) }}
+
+            {# Results #}
+            <div class="row justify-content-center mt-4">
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <div class="bg-white p-4 rounded shadow" id="search_results">
+                        {% if results is empty %}
+                            <p class="text-muted">Your search results will appear here...</p>
+                        {% else %}
+                            {% for user in results %}
+                                <a href="{{ path('app_profile_view', { id: user.id }) }}"
+                                   class="result-card card border rounded-3 p-3 mb-2 w-100 d-block text-decoration-none">
+                                    <div class="d-flex align-items-center gap-3">
+                                        {% if user.avatarUrl %}
+                                            <img class="avatar" src="{{ user.avatarUrl }}"
+                                                 alt="{{ user.insatien.nom }}">
+                                        {% else %}
+                                            <div class="avatar-fallback">
+                                                {{ user.insatien.nom|first|upper }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="flex-grow-1">
+                                            <p class="fw-medium mb-0">
+                                                {{ user.insatien.nom }} {{ user.insatien.prenom }}
+                                            </p>
+                                            <p class="text-muted mb-1">
+                                                Promo {{ user.insatien.promoYear ?? '—' }}
+                                            </p>
+                                            <div class="d-flex flex-wrap gap-1">
+                                                {% for userSkill in user.userSkills %}
+                                                    <span class="badge skill-badge">
+                                                    {{ userSkill.skill.name }}
+                                                </span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <span class="badge bg-light text-dark">User</span>
+                                        <span class="arrow-icon ms-auto">›</span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Pagination #}
+            {% if results.pageCount > 1 %}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-auto">
+                        <nav aria-label="Search pagination">
+                            <ul class="pagination" id="pagination">
+
+                                <li class="page-item {{ results.currentPageNumber == 1 ? 'disabled' }}" id="prev-btn">
+                                    <a class="page-link"
+                                       href="?query={{ query }}&filter={{ filter }}&page={{ results.currentPageNumber - 1 }}"
+                                       aria-label="Previous">&laquo;</a>
+                                </li>
+
+                                <div id="pagination_numbers" class="d-flex">
+                                    {% for page in 1..results.pageCount %}
+                                        <li class="page-item {{ page == results.currentPageNumber ? 'active' }}">
+                                            <a class="page-link"
+                                               href="?query={{ query }}&filter={{ filter }}&page={{ page }}">
+                                                {{ page }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+
+                                <li class="page-item {{ results.currentPageNumber == results.pageCount ? 'disabled' }}" id="next-btn">
+                                    <a class="page-link"
+                                       href="?query={{ query }}&filter={{ filter }}&page={{ results.currentPageNumber + 1 }}"
+                                       aria-label="Next">&raquo;</a>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -24,9 +24,16 @@ class Filiere
     #[ORM\OneToMany(targetEntity: Parcours::class, mappedBy: 'filiere')]
     private Collection $parcours;
 
+    /**
+     * @var Collection<int, Insatien>
+     */
+    #[ORM\OneToMany(targetEntity: Insatien::class, mappedBy: 'filiere')]
+    private Collection $insatiens;
+
     public function __construct()
     {
         $this->parcours = new ArrayCollection();
+        $this->insatiens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,6 +77,36 @@ class Filiere
             // set the owning side to null (unless already changed)
             if ($parcour->getFiliere() === $this) {
                 $parcour->setFiliere(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Insatien>
+     */
+    public function getInsatiens(): Collection
+    {
+        return $this->insatiens;
+    }
+
+    public function addInsatien(Insatien $insatien): static
+    {
+        if (!$this->insatiens->contains($insatien)) {
+            $this->insatiens->add($insatien);
+            $insatien->setFiliere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInsatien(Insatien $insatien): static
+    {
+        if ($this->insatiens->removeElement($insatien)) {
+            // set the owning side to null (unless already changed)
+            if ($insatien->getFiliere() === $this) {
+                $insatien->setFiliere(null);
             }
         }
 

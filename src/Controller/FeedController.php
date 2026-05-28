@@ -15,7 +15,7 @@ class FeedController extends AbstractController
     #[Route('/feed', name: 'feed')]
     public function index(
         UserRepository $userRepo,
-        JobRepository $jobRepo,
+        JobRepository  $jobRepo,
         PostRepository $postRepo
     ): Response
     {
@@ -30,5 +30,12 @@ class FeedController extends AbstractController
             'internships' => $jobRepo->findInternships(),
             'posts' => $postRepo->findAllPosts(),
         ]);
+    }
+
+    #[Route('/')]
+    public function test(): Response
+    {
+
+        return $this->render('base.html.twig');
     }
 }

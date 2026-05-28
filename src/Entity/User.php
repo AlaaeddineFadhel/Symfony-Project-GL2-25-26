@@ -20,6 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use CreatedAtTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -105,6 +106,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->achievements = new ArrayCollection();
         $this->posts = new ArrayCollection();
     }
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials(): void
+    {
+        // vide
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +136,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
 
         return $this;
+    }
+    public function getPassword(): string
+    {
+        return $this->passwordHash;
     }
 
     public function getPasswordHash(): ?string
@@ -410,37 +429,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->updatedAt = new \DateTime();
     }
-    private ?string $password = null;
-  
-
-    public function getUserIdentifier(): string
+    public function setPasswordHash(string $passwordHash): static
     {
-        return (string) $this->email;
-    }
-
-    public function getRoles(): array
-    {
-        return ['ROLE_USER'];
-    }
-
-    public function eraseCredentials(): void
-    {
-        // clear temporary sensitive data here if needed
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPasswordHash(string $password): self
-    {
-        $this->password = $password;
+        $this->passwordHash = $passwordHash;
 
         return $this;
     }
-
     
+  
     
 }
 

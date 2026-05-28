@@ -31,6 +31,10 @@ class Insatien
     #[ORM\ManyToOne(inversedBy: 'insatiens')]
     private ?Parcours $parcours = null;
 
+    #[ORM\ManyToOne(inversedBy: 'insatiens')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Filiere $filiere = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +96,18 @@ class Insatien
     public function setParcours(?Parcours $parcours): static
     {
         $this->parcours = $parcours;
+
+        return $this;
+    }
+
+    public function getFiliere(): ?Filiere
+    {
+        return $this->filiere;
+    }
+
+    public function setFiliere(?Filiere $filiere): static
+    {
+        $this->filiere = $filiere;
 
         return $this;
     }

@@ -20,6 +20,7 @@ class ContactController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
+
         $contact = new ContactMessages();
 
         $form = $this->createForm(ContactMessagesForm::class, $contact);
@@ -43,4 +44,3 @@ class ContactController extends AbstractController
         ]);
     }
 }
-?>

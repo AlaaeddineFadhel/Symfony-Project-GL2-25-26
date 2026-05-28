@@ -18,7 +18,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_feed');
         }
 
-        $registrationForm = $this->createForm(RegistrationForm::class, new User(), [
+        $registrationForm = $this->createForm(RegistrationForm::class, new user(), [
             'action' => $this->generateUrl('app_register'),
             'method' => 'POST',
         ]);

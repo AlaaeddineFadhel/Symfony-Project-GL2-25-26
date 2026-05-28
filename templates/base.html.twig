@@ -25,14 +25,14 @@
             <!-- LEFT -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="">Feed</a>
+                    <a class="nav-link" href="{{ path("feed") }}">Feed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="">Jobs</a>
+                    <a class="nav-link " href="{{ path("jobs") }}">Jobs</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="">Contact</a>
+                    <a class="nav-link" href="{{ path('app_contact') }}">Contact</a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -68,12 +68,13 @@
                     </ul>
                 </li>
             </ul>
-            {# logique du formulaire à changer #}
-            <form class="d-flex flex-grow-1 mx-2" action="" method="GET">
-                <input class="form-control me-2" type="search" name="query" placeholder="Search"
-                       value=""/>
-                <button type="submit" class="btn btn-outline-success">Search</button>
-            </form>
+            {% set searchForm = search_form() %}
+
+            {{ form_start(searchForm, { attr: { class: 'd-flex flex-grow-1 mx-2' } }) }}
+            {{ form_widget(searchForm.query) }}
+            {{ form_widget(searchForm.submit) }}
+            {{ form_widget(searchForm.filter, { attr: { class: 'd-none' } }) }}
+            {{ form_end(searchForm) }}
             <!-- RIGHT -->
             <ul class="navbar-nav ms-2 mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -113,5 +114,6 @@
 {% block javascript %}{% endblock javascript %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('/script/base.js') }}"></script>
+<script src="{{ asset('/script/main.js') }}"></script>
 </body>
 </html>
