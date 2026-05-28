@@ -27,7 +27,38 @@ class RegistrationController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('app_feed');
         }
+        $user = new user();
+        $form = $this->createForm(RegistrationForm::class, $user);
+        $form->handleRequest($request);
+ 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $insatien = new Insatien();
+            $insatien->setNom($form->get('nom')->getData());
+            $insatien->setPrenom($form->get('prenom')->getData());
+            $insatien->setEmail($form->get('email')->getData());
+ 
+            $user->setPasswordHash(
+                $hasher->hashPassword($user, $form->get('plainPassword')->getData())
+            );
+            $user->setInsatien($insatien);
+            $user->setUpdatedAt(new \DateTime());
+ 
+            $em->persist($insatien);
+            $em->persist($user);
+            $em->flush();
+ 
+            return $security->login($user, 'form_login', 'main');
+        }
+ 
+        return $this->render('security/login.html.twig', [
+            'registrationForm' => $form,
+            'loginError'       => null,
+            'lastUsername'     => '',
+            'activePanel'      => 'register',
+        ]);
+    }
 
      
-    }
-}
+ }
+
+?>

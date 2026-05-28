@@ -8,7 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Trait\CreatedAtTrait;
-
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -16,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
 
-class User 
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use CreatedAtTrait;
     #[ORM\Id]
@@ -127,12 +128,7 @@ class User
         return $this->passwordHash;
     }
 
-    public function setPasswordHash(string $password_hash): static
-    {
-        $this->passwordHash = $password_hash;
-
-        return $this;
-    }
+   
 
     public function getProfileLink(): ?string
     {
@@ -414,5 +410,37 @@ class User
     {
         $this->updatedAt = new \DateTime();
     }
+    private ?string $password = null;
+  
 
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials(): void
+    {
+        // clear temporary sensitive data here if needed
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPasswordHash(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    
+    
 }
+
