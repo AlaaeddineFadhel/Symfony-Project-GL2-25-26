@@ -9,7 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\SearchType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 final class RechercheController extends AbstractController
 {
     #[Route('/recherche', name: 'app_recherche')]

@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
-class User /* implements UserInterface, PasswordAuthenticatedUserInterface */
+class User  implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use CreatedAtTrait;
     #[ORM\Id]

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller; 
+namespace App\Controller;
 
 use App\Entity\ContactMessages;
 use App\Repo\ContactMessagesRepository;
@@ -24,22 +24,21 @@ class ContactMessagesController extends AbstractController
         }
         $contact = new ContactMessages();
         $form    = $this->createForm(ContactType::class, $contact);
- 
+
         $form->handleRequest($request);
- 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->save($contact, flush: true);
- 
+
             $this->addFlash('contact_success', 'Message Received!');
- 
+
             // PRG — prevents duplicate submission on page refresh
             return $this->redirectToRoute('app_contact', ['sent' => 1]);
         }
- 
+
         return $this->render('contact/index.html.twig', [
             'contactForm' => $form,
             'sent'        => $request->query->getBoolean('sent'),
         ]);
     }
 }
-?>
