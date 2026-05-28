@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "009dcbc7539ced3dd4beacb4b8cda926",
+    "content-hash": "791168309654f3c44cc099b89b2a3ea4",
     "packages": [
         {
             "name": "composer/semver",
@@ -962,16 +962,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "3.6.6",
+            "version": "3.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "471b12949ff9bc23ecdc809ce838613c1aa9a0b9"
+                "reference": "bc217c0e19c3a9eadfa67697143b87c9ba01272c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/471b12949ff9bc23ecdc809ce838613c1aa9a0b9",
-                "reference": "471b12949ff9bc23ecdc809ce838613c1aa9a0b9",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/bc217c0e19c3a9eadfa67697143b87c9ba01272c",
+                "reference": "bc217c0e19c3a9eadfa67697143b87c9ba01272c",
                 "shasum": ""
             },
             "require": {
@@ -1044,9 +1044,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/3.6.6"
+                "source": "https://github.com/doctrine/orm/tree/3.6.7"
             },
-            "time": "2026-05-21T06:05:47+00:00"
+            "time": "2026-05-25T16:45:47+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -5826,16 +5826,16 @@
         },
         {
             "name": "symfony/runtime",
-            "version": "v7.4.12",
+            "version": "v7.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/runtime.git",
-                "reference": "0b032fa77359745db793df5aff626779180c5f3b"
+                "reference": "1a24cf8aab3a9378117718b35525c4126ad3adec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/runtime/zipball/0b032fa77359745db793df5aff626779180c5f3b",
-                "reference": "0b032fa77359745db793df5aff626779180c5f3b",
+                "url": "https://api.github.com/repos/symfony/runtime/zipball/1a24cf8aab3a9378117718b35525c4126ad3adec",
+                "reference": "1a24cf8aab3a9378117718b35525c4126ad3adec",
                 "shasum": ""
             },
             "require": {
@@ -5886,7 +5886,7 @@
                 "runtime"
             ],
             "support": {
-                "source": "https://github.com/symfony/runtime/tree/v7.4.12"
+                "source": "https://github.com/symfony/runtime/tree/v7.4.13"
             },
             "funding": [
                 {
@@ -5906,20 +5906,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-20T07:20:23+00:00"
+            "time": "2026-05-23T18:04:28+00:00"
         },
         {
             "name": "symfony/security-bundle",
-            "version": "v7.4.12",
+            "version": "v7.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-bundle.git",
-                "reference": "6f6f859b437fb95028addfa21b417d25daca86d5"
+                "reference": "0cbc6528aa583795ab44e43b4e92a09acf927c6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/6f6f859b437fb95028addfa21b417d25daca86d5",
-                "reference": "6f6f859b437fb95028addfa21b417d25daca86d5",
+                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/0cbc6528aa583795ab44e43b4e92a09acf927c6f",
+                "reference": "0cbc6528aa583795ab44e43b4e92a09acf927c6f",
                 "shasum": ""
             },
             "require": {
@@ -5998,7 +5998,7 @@
             "description": "Provides a tight integration of the Security component into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/security-bundle/tree/v7.4.12"
+                "source": "https://github.com/symfony/security-bundle/tree/v7.4.13"
             },
             "funding": [
                 {
@@ -6018,7 +6018,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-15T07:14:02+00:00"
+            "time": "2026-05-23T16:05:06+00:00"
         },
         {
             "name": "symfony/security-core",

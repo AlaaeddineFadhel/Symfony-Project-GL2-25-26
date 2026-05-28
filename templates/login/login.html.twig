@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumini | Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+</head>
+<body>
+<div class="container" id="authcontainer" data-active="{{ activePanel }}">
+
+
+    <div class="form-box login">
+        <form class="signinform" action="{{ path('app_login') }}" method="POST">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <h1 class="formtitle">Reconnect with your Alumini story</h1>
+            <p class="form-subtitle">Access your circle. Build your future.</p>
+
+            {# Erreur d'authentification (mauvais email/password) #}
+            {% if loginError %}
+                <div class="auth-alert">
+                    <i class="bi bi-exclamation-circle-fill me-1"></i>
+                    {{ loginError.messageKey|trans(loginError.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            <div class="input-field">
+                <input type="email"
+                       name="_email"
+                       id="signInEmail"
+                       class="form-control"
+                       placeholder="Email"
+                       value="{{ lastUsername }}"
+                       required
+                       autofocus>
+                <i class="bi bi-envelope-fill"></i>
+            </div>
+
+            <div class="input-field">
+                <input type="password"
+                       name="_password"
+                       id="signInPassword"
+                       class="form-control"
+                       placeholder="Password"
+                       required>
+                <i class="bi bi-lock"></i>
+            </div>
+
+            <div class="forgetpass-link">
+                <a href="#">Password Forgotten?</a>
+            </div>
+
+            <button type="submit" class="submitbtn">Sign in</button>
+
+            <p>Enter with social Platforms</p>
+            <div class="socialmedia-icons">
+                <a href="#" class="social-icon"><i class="bi bi-google"></i></a>
+                <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-icon"><i class="bi bi-github"></i></a>
+            </div>
+        </form>
+    </div>
+
+   
+    <div class="form-box register">
+        {{ form_start(registrationForm, {
+            attr: { class: 'signupform', id: 'signUp' }
+        }) }}
+
+            <h1 class="formtitle">Start your Alumini journey</h1>
+            <p class="form-subtitle">A few details, a lifetime of connections</p>
+
+            {# Erreurs globales du formulaire d'inscription #}
+            {% for error in registrationForm.vars.errors %}
+                <div class="auth-alert">
+                    <i class="bi bi-exclamation-circle-fill me-1"></i>
+                    {{ error.message }}
+                </div>
+            {% endfor %}
+
+            <div class="name-row">
+                <div class="input-field">
+                    {{ form_widget(registrationForm.prenom, { attr: { class: 'form-control' } }) }}
+                    <i class="bi bi-person-fill"></i>
+                    {% if not registrationForm.prenom.vars.valid %}
+                        <span class="field-error">{{ registrationForm.prenom.vars.errors[0].message }}</span>
+                    {% endif %}
+                </div>
+                <div class="input-field">
+                    {{ form_widget(registrationForm.nom, { attr: { class: 'form-control' } }) }}
+                    <i class="bi bi-person-fill"></i>
+                    {% if not registrationForm.nom.vars.valid %}
+                        <span class="field-error">{{ registrationForm.nom.vars.errors[0].message }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="input-field">
+                {{ form_widget(registrationForm.email, { attr: { class: 'form-control' } }) }}
+                <i class="bi bi-envelope-fill"></i>
+                {% if not registrationForm.email.vars.valid %}
+                    <span class="field-error">{{ registrationForm.email.vars.errors[0].message }}</span>
+                {% endif %}
+            </div>
+
+            <div class="input-field">
+                {{ form_widget(registrationForm.plainPassword.first, { attr: { class: 'form-control' } }) }}
+                <i class="bi bi-lock"></i>
+            </div>
+
+            <div class="input-field">
+                {{ form_widget(registrationForm.plainPassword.second, { attr: { class: 'form-control' } }) }}
+                <i class="bi bi-lock-fill"></i>
+                {% if not registrationForm.plainPassword.vars.valid %}
+                    <span class="field-error">{{ registrationForm.plainPassword.vars.errors[0].message }}</span>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="submitbtn">Sign up</button>
+
+            <p>Sign up with social Platforms</p>
+            <div class="socialmedia-icons">
+                <a href="#" class="social-icon"><i class="bi bi-google"></i></a>
+                <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-icon"><i class="bi bi-github"></i></a>
+            </div>
+
+        {{ form_end(registrationForm) }}
+    </div>
+
+    {# TOGGLE PANEL (animation slide gauche/droite) #}
+    <div class="toggle-box">
+        <div class="toggle-panel toggle-left">
+            <h1>Already part of the story?</h1>
+            <p>Sign in and reconnect with your community</p>
+            <button class="toggle-btn" id="loginBtn">Sign In</button>
+        </div>
+        <div class="toggle-panel toggle-right">
+            <h1>New here? Let's build something meaningful</h1>
+            <p>Join alumni, mentors, and opportunities that move you forward</p>
+            <button class="toggle-btn" id="registerBtn">Sign Up</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    const container  = document.getElementById('authcontainer');
+    const loginBtn   = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+
+    // Ouvre le bon panel selon ce que le controller a renvoyé
+    if (container.dataset.active === 'register') {
+        container.classList.add('active');
+    }
+
+    registerBtn.addEventListener('click', () => container.classList.add('active'));
+    loginBtn.addEventListener('click',    () => container.classList.remove('active'));
+})();
+</script>
+
+</body>
+</html>
