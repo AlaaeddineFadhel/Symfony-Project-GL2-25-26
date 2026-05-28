@@ -14,7 +14,7 @@ class JobDetailController extends AbstractController
     public function show(int $id, JobRepository $jobRepo): Response
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
         $job = $jobRepo->find($id);

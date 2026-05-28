@@ -23,7 +23,7 @@ class JobController extends AbstractController
     public function index(Request $request, JobRepository $jobRepo): Response
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
         $title   = $request->query->get('title', '');
