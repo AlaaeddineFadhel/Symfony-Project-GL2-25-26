@@ -2,24 +2,23 @@
 
 {% block title %}Alumini |Contact {% endblock %}
 
-{% block stylesheets %}
+{% block css %}
 
-   {{parent()}}
-   <link rel ="stylesheet" href="{{assets('css/contact.css)}}">
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/contact.css') }}">
 {% endblock %}
 
 {% block body %}
 
-<!-- Hero -->
+{# Hero #}
 <div class="contact-hero">
     <h1 class="contact-hero-title">Get in <span>Touch</span></h1>
     <p class="contact-hero-sub">A question, an idea, or just want to reconnect with your college roots? We'd love to hear from you.</p>
 </div>
 
-<!-- Main content -->
+
 <div class="contact-wrapper">
 
-    <!-- Left: info cards -->
     <aside class="contact-info-col">
 
         <div class="contact-info-card">
@@ -67,7 +66,6 @@
 
     </aside>
 
-    <!-- Right: form -->
     <section class="contact-form-col">
         <div class="contact-form-card">
             {% if sent and app.flashes('contact_success') is not empty %}
@@ -76,7 +74,7 @@
                     <div class="contact-success-icon">🎉</div>
                     <h3>{{ app.flashes('contact_success')|first }}</h3>
                     <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
-                    <a href="{{ path('app_feed') }}" class="btn contact-submit-btn mt-2">← Back to Feed</a>
+                    <a href="{{ path('feed') }}" class="btn contact-submit-btn mt-2">← Back to Feed</a>
                 </div>
 
             {% else %}
@@ -168,7 +166,7 @@
 
 {% endblock %}
 
-{% block javascripts %}
+{% block javascript %}
 
  {{ parent() }}
     <script>

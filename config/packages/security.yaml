@@ -21,9 +21,12 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+                username_parameter: email
+                password_parameter: password
+                enable_csrf: true
             logout:
                 path: app_logout
-                target: app_login
+                target: app_home
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -33,9 +36,11 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/contact, roles: ROLE_USER }
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        - { path: ^/home$, roles: PUBLIC_ACCESS }
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/contact, roles: PUBLIC_ACCESS }
         - { path: ^/feed, roles: ROLE_USER }
         - { path: ^/jobs, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER }
