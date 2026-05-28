@@ -8,16 +8,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Trait\CreatedAtTrait;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
-class User  implements UserInterface, PasswordAuthenticatedUserInterface
+
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use CreatedAtTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -144,12 +147,7 @@ class User  implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->passwordHash;
     }
 
-    public function setPasswordHash(string $password_hash): static
-    {
-        $this->passwordHash = $password_hash;
-
-        return $this;
-    }
+   
 
     public function getProfileLink(): ?string
     {
@@ -438,5 +436,14 @@ class User  implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->updatedAt = new \DateTime();
     }
+    public function setPasswordHash(string $passwordHash): static
+    {
+        $this->passwordHash = $passwordHash;
 
+        return $this;
+    }
+    
+  
+    
 }
+
