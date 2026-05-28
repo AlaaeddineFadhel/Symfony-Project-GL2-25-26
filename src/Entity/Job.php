@@ -218,7 +218,7 @@ class Job
         return $this->salaryMax;
     }
 
-    public function setSalaryMax(string $salaryMax): static
+    public function setSalaryMax(?string $salaryMax): static
     {
         $this->salaryMax = $salaryMax;
 

@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post a Job{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width:900px; margin-top:40px;">
+    <h2 class="mb-4">Post a Job</h2>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <form method="POST" action="{{ path('app_job_new') }}" class="card shadow-sm p-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Title *</label>
+                <input type="text" name="titre" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Company</label>
+                <input type="text" name="entreprise" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Contact Email *</label>
+                <input type="email" name="contactEmail" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Application Link</label>
+                <input type="text" name="applicationLink" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Company Link</label>
+                <input type="text" name="companyLink" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Job Type</label>
+                <select name="jobType" class="form-select">
+                    <option value="full-time">Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="internship">Internship</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Job Mode</label>
+                <select name="jobMode" class="form-select">
+                    <option value="remote">Remote</option>
+                    <option value="onsite">Onsite</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Min Salary</label>
+                <input type="number" step="0.01" name="salaryMin" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Max Salary</label>
+                <input type="number" step="0.01" name="salaryMax" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Country</label>
+                <select name="country" class="form-select">
+                    <option value="">-- optional --</option>
+                    {% for country in countries %}
+                        <option value="{{ country.id }}">{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">City</label>
+                <select name="city" class="form-select">
+                    <option value="">-- optional --</option>
+                    {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Required Experience (years)</label>
+                <input type="number" name="reqExperience" class="form-control" min="0">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Deadline</label>
+                <input type="date" name="deadline" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Currency</label>
+                <input type="text" name="currency" class="form-control" value="TND" maxlength="3">
+            </div>
+            <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Requirements</label>
+                <textarea name="requirements" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Responsibilities</label>
+                <textarea name="responsibilities" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ path('jobs') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Publish Job</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

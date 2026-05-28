@@ -31,5 +31,11 @@ class FeedController extends AbstractController
             'posts' => $postRepo->findAllPosts(),
         ]);
     }
+//zeyda ?
+    #[Route('/')]
+    public function test(): Response
+    {
 
+        return $this->render('base.html.twig');
+    }
 }
