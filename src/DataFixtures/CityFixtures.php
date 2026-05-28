@@ -2,10 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\City;
+use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class CityFixtures extends Fixture
+class CityFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -23,19 +26,20 @@ class CityFixtures extends Fixture
         ];
 
         foreach ($data as [$countryId, $name]) {
-
             $city = new City();
-
             $city->setName($name);
-
-            // country_id is a relation object
-            $country = $manager->getRepository(Country::class)->find($countryId);
-
-            $city->setCountry($country);
+            $city->setCountry($manager->getRepository(Country::class)->find($countryId));
 
             $manager->persist($city);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            CountryFixtures::class,
+        ];
     }
 }
