@@ -32,10 +32,4 @@ class FeedController extends AbstractController
         ]);
     }
 
-    #[Route('/')]
-    public function test(): Response
-    {
-
-        return $this->render('base.html.twig');
-    }
 }
