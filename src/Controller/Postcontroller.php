@@ -1,18 +1,45 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Controller;
 
+use App\Entity\Post;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class Postcontroller extends AbstractController
+#[IsGranted('ROLE_USER')]
+class PostController extends AbstractController
 {
-    #[Route('/post')]
-    public function index(): Response
+    public function __construct(private EntityManagerInterface $em) {}
+
+    #[Route('/post/create', name: 'app_post_create', methods: ['POST'])]
+    public function create(Request $request): Response
     {
-        return $this->render('post/index.html.twig');
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+
+        // Get the text from a textarea (make sure your feed/post modal has name="content")
+        $content = $request->request->get('content');
+
+        if (!empty(trim($content))) {
+            $post = new Post();
+            $post->setContent($content);
+            $post->setUser($currentUser);
+            $post->setCreatedAt(new \DateTimeImmutable());
+
+            $this->em->persist($post);
+            $this->em->flush();
+
+            $this->addFlash('success', 'Votre post a été publié !');
+        } else {
+            $this->addFlash('error', 'Le contenu du post ne peut pas être vide.');
+        }
+
+        // Redirect safely back to the profile page
+        return $this->redirectToRoute('app_my_profile');
     }
 }

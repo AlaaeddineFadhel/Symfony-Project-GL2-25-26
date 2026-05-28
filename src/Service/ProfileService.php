@@ -10,6 +10,7 @@ use App\Entity\Achievement;
 use App\Entity\Recommendation;
 use App\Enum\ExperienceType;
 use App\Enum\AchievementType;
+use App\Repository\ParcoursRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -19,6 +20,7 @@ class ProfileService
     public function __construct(
         private EntityManagerInterface $em,
         private SluggerInterface $slugger,
+        private ParcoursRepository $parcoursRepository,
         private string $avatarUploadDir,
     ) {}
 
@@ -49,6 +51,16 @@ class ProfileService
                     ? (int) $data['promo_year']
                     : null
             );
+
+
+            if (!empty($data['parcours_id'])) {
+                $parcours = $this->parcoursRepository->find((int)$data['parcours_id']);
+                if ($parcours) {
+                    $insatien->setParcours($parcours); // Adjust this setter if your entity uses a different name
+                }
+            } else {
+                $insatien->setParcours(null);
+            }
         }
 
         $this->syncSkills($user, $data['skills'] ?? []);
@@ -93,12 +105,17 @@ class ProfileService
         $user->getExperiences()->clear();
 
         foreach ($experiences as $expData) {
+            if (empty($expData['entreprise'])) continue; // Skips saving empty row attempts
+
             $exp = new Experience();
             $exp->setUser($user);
             $exp->setEntreprise($expData['entreprise'] ?? null);
 
             $expTypeStr = $expData['experience_type'] ?? 'job';
-            $exp->setExperienceType(ExperienceType::from($expTypeStr));
+
+            // CRITICAL FIX: Use tryFrom() falling back to a default case to prevent backend crash loops if string mismatches occur.
+            $typeEnum = ExperienceType::tryFrom($expTypeStr) ?? ExperienceType::Job;
+            $exp->setExperienceType($typeEnum);
 
             $exp->setDateDebut(
                 !empty($expData['date_debut'])
@@ -159,7 +176,10 @@ class ProfileService
             $ach->setIssuer($achData['issuer'] ?? null);
 
             $achTypeStr = $achData['achievement_type'] ?? 'other';
-            $ach->setAchievementType(AchievementType::from($achTypeStr));
+
+            // CRITICAL FIX: Safe conversion for backend enums from lowercase JS selectors
+            $achTypeEnum = AchievementType::tryFrom($achTypeStr) ?? AchievementType::Other;
+            $ach->setAchievementType($achTypeEnum);
 
             $ach->setDateObtained(
                 !empty($achData['date_obtained'])
