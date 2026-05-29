@@ -168,8 +168,8 @@
         <div class="profile-section">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <span class="section-title" style="margin-bottom:0; border:none;">Posts récents</span>
-                <a href="{{ path('app_post_create') }}" class="btn btn-sm"
-                   style="background:#65171e; color:#fff; border-radius:8px;">+ Publier</a>
+                <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#postModal"
+                        style="background:#65171e; color:#fff; border-radius:8px;">+ Publier</button>
             </div>
             {% if user.posts is not empty %}
                 {% for post in user.posts %}
@@ -403,6 +403,74 @@
                     <button type="button" class="btn btn-save" id="saveBtn"
                             onclick="saveProfile()">Save Changes</button>
                 </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius:16px; overflow:hidden;">
+                <div class="modal-header" style="background:linear-gradient(135deg,#7a1a2e,#4a0f1c); border:none;">
+                    <div>
+                    <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase;
+                                 letter-spacing:0.1em; color:rgba(255,255,255,0.7);">New Post</span>
+                        <h5 class="modal-title" style="color:#fff; font-weight:700; margin:0;">
+                            Share a <span style="font-style:italic;">Post</span>
+                        </h5>
+                        <p style="color:rgba(255,255,255,0.8); font-size:0.85rem; margin:0;">
+                            Share an update with the INSAT community.
+                        </p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form method="POST" action="{{ path('app_post_create') }}" id="createPostForm">
+                    <div class="modal-body" style="background:#fafafa; padding:28px;">
+
+                        <div style="margin-bottom:20px;">
+                            <div style="display:flex; align-items:center; gap:8px;
+                                    font-size:0.72rem; font-weight:700; text-transform:uppercase;
+                                    letter-spacing:0.1em; color:#7a1a2e; margin-bottom:10px;">
+                            <span style="width:22px; height:22px; background:#7a1a2e; color:#fff;
+                                         border-radius:50%; display:flex; align-items:center;
+                                         justify-content:center; font-size:0.7rem;">1</span>
+                                Post Content <span style="color:#e53935;">*</span>
+                            </div>
+                            <textarea name="content"
+                                      id="postContent"
+                                      rows="6"
+                                      maxlength="6000"
+                                      required
+                                      placeholder="Share an update, an achievement, or a question for the community…"
+                                      style="width:100%; border:1px solid #e5e7eb; border-radius:10px;
+                                         padding:12px; font-size:0.9rem; resize:vertical;
+                                         transition:border-color 0.2s;"
+                                      onfocus="this.style.borderColor='#7a1a2e'; this.style.boxShadow='0 0 0 3px rgba(122,26,46,0.1)'"
+                                      onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
+                                      oninput="document.getElementById('charCount').textContent=this.value.length"></textarea>
+                            <div style="text-align:right; font-size:0.78rem; color:#9ca3af; margin-top:4px;">
+                                <span id="charCount">0</span> / 6000
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer" style="background:#fff; border-top:1px solid #f0f0f0;
+                                                  padding:16px 28px; justify-content:space-between;">
+                        <button type="button"
+                                data-bs-dismiss="modal"
+                                style="background:transparent; border:1px solid #e5e7eb; border-radius:10px;
+                                   color:#6b7280; font-weight:600; padding:9px 20px; cursor:pointer;">
+                            Cancel
+                        </button>
+                        <button type="submit" id="submitPostBtn"
+                                style="background:#7a1a2e; border:none; border-radius:10px; color:#fff;
+                                   font-weight:700; padding:9px 28px; cursor:pointer;
+                                   transition:background 0.2s;">
+                            <i class="bi bi-send-fill me-2"></i>Publish
+                        </button>
+                    </div>
+                </form>
 
             </div>
         </div>

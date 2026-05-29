@@ -79,6 +79,8 @@ class ProfileService
         }
         $user->getUserSkills()->clear();
 
+        $this->em->flush();
+
         foreach ($skillNames as $name) {
             $name = trim($name);
             if (!$name) continue;
@@ -113,7 +115,7 @@ class ProfileService
 
             $expTypeStr = $expData['experience_type'] ?? 'job';
 
-            // CRITICAL FIX: Use tryFrom() falling back to a default case to prevent backend crash loops if string mismatches occur.
+
             $typeEnum = ExperienceType::tryFrom($expTypeStr) ?? ExperienceType::Job;
             $exp->setExperienceType($typeEnum);
 
