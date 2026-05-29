@@ -1,0 +1,58 @@
+<form method="GET" class="card shadow-sm sticky-top" style="top:90px;">
+    <div class="card-body">
+
+        <h5>Filters</h5>
+        <hr>
+
+        <div class="mb-3">
+            <h6 class="text-muted small">Job Type</h6>
+
+            <div class="bubble-group">
+                <div class="bubble {% if jobType == '' %}active{% endif %}" data-value="">
+                    All
+                </div>
+                <div class="bubble {% if jobType == 'full-time' %}active{% endif %}" data-value="full-time">
+                    Full-time
+                </div>
+                <div class="bubble {% if jobType == 'part-time' %}active{% endif %}" data-value="part-time">
+                    Part-time
+                </div>
+                <div class="bubble {% if jobType == 'internship' %}active{% endif %}" data-value="internship">
+                    Internship
+                </div>
+            </div>
+
+            <input type="hidden" name="job_type" id="jobTypeInput" value="{{ jobType }}">
+        </div>
+
+        <div class="mb-3">
+            <h6 class="text-muted small">Work Mode</h6>
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="remoteCheck" name="remote" value="1" {% if remote == '1' %}checked{% endif %}>
+                <label class="form-check-label">Remote</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="onsiteCheck" name="onsite" value="1" {% if onsite == '1' %}checked{% endif %}>
+                <label class="form-check-label">Onsite</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="hybridCheck" name="hybrid" value="1" {% if hybrid == '1' %}checked{% endif %}>
+                <label class="form-check-label">Hybrid</label>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <h6 class="text-muted small">Salary</h6>
+
+            <input type="range" class="form-range" min="100" max="5000" value="{{ salary }}" id="range4" name="salary">
+
+            <div class="d-flex justify-content-between small mt-1">
+                <span>100</span>
+                <span id="rangeValue">{{ salary }} DT</span>
+                <span>5000</span>
+            </div>
+        </div>
+
+    </div>
+</form>

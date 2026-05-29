@@ -2,8 +2,8 @@
     --bg: #f4f4f4;
     --text: #111;
     --card-bg: #ffffff;
-    --primary: #65171e;
-    --primary-hover: #484d62;
+    --primary: #b71c1c;
+    --primary-hover: #8a1a1a;
     --border: #e5e5e5;
     --muted: #6c757d;
 }
@@ -47,14 +47,14 @@ body {
     color: #444;
 }
 .btn-primary {
-    background: var(--primary);
-    border: none;
+    background: var(--primary) !important;
+    border: none !important;
     border-radius: 10px;
     transition: 0.2s ease;
 }
 
 .btn-primary:hover {
-    background: var(--primary-hover);
+    background: var(--primary-hover) !important;
 }
 
 

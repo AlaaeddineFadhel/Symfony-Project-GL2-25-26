@@ -1,0 +1,49 @@
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <form method="GET" class="row g-2">
+
+            <div class="col-md-5">
+                <input type="text" name="title" class="form-control" placeholder="Job title..." value="{{ title }}">
+            </div>
+
+            <div class="col-md-3">
+                <select name="country" class="form-select">
+                    <option value="">Country</option>
+                    <option value="1" {% if country == '1' %}selected{% endif %}>Tunisia</option>
+                    <option value="2" {% if country == '2' %}selected{% endif %}>France</option>
+                    <option value="3" {% if country == '3' %}selected{% endif %}>Canada</option>
+                    <option value="4" {% if country == '4' %}selected{% endif %}>Germany</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <select name="city" class="form-select">
+                    <option value="">City</option>
+                    <option value="1" {% if city == '1' %}selected{% endif %}>Tunis</option>
+                    <option value="2" {% if city == '2' %}selected{% endif %}>Sfax</option>
+                    <option value="3" {% if city == '3' %}selected{% endif %}>Sousse</option>
+                    <option value="4" {% if city == '4' %}selected{% endif %}>Nabeul</option>
+                    <option value="5" {% if city == '5' %}selected{% endif %}>Monastir</option>
+                    <option value="6" {% if city == '6' %}selected{% endif %}>Ariana</option>
+                    <option value="7" {% if city == '7' %}selected{% endif %}>Paris</option>
+                    <option value="8" {% if city == '8' %}selected{% endif %}>Lyon</option>
+                    <option value="9" {% if city == '9' %}selected{% endif %}>Montreal</option>
+                    <option value="10" {% if city == '10' %}selected{% endif %}>Berlin</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 d-grid">
+                <button class="btn btn-primary">Search</button>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end">
+                <a class="btn btn-outline-primary" href="{{ path('app_job_new') }}">
+                    + Post a Job
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>

@@ -1,50 +1,131 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Job details | {{ job.titre }}{% endblock %}
+{% block title %}{{ job.titre }} | Alumni{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ asset('styles/jobdetail.css') }}">
+{% endblock %}
 
 {% block body %}
 
-<div class="container py-4">
+<div class="page-content container-fluid px-4 py-4">
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <div class="row justify-content-center">
 
-            <h1 class="mb-1">{{ job.titre }}</h1>
-            <h5 class="text-muted mb-3">{{ job.entreprise ?: 'Company not specified' }}</h5>
+        <div class="col-lg-10">
 
-            <div class="mb-3">
-                <span class="badge bg-secondary">{{ job.jobType.value }}</span>
-                <span class="badge bg-secondary">{{ job.jobMode.value }}</span>
+            <div class="card shadow-sm job-detail-card">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                        <div>
+                            <h1 class="job-title mb-2">{{ job.titre }}</h1>
+                            <h5 class="text-muted">{{ job.entreprise ?: 'Company not specified' }}</h5>
+                        </div>
+
+                        <div>
+                            <span class="badge bg-primary fs-6 p-2">{{ job.jobType.value }}</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="job-meta-box">
+                                <small class="text-muted">Job Mode</small>
+                                <div>{{ job.jobMode.value }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="job-meta-box">
+                                <small class="text-muted">Required Experience</small>
+                                <div>{{ experienceText }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="job-meta-box">
+                                <small class="text-muted">Salary</small>
+                                <div>{{ salaryText }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="job-meta-box">
+                                <small class="text-muted">Country</small>
+                                <div>{{ countryText }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="job-meta-box">
+                                <small class="text-muted">City</small>
+                                <div>{{ cityText }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="job-meta-box">
+                                <small class="text-muted">Publication Date</small>
+                                <div>{{ publicationText }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="job-meta-box">
+                                <small class="text-muted">Deadline</small>
+                                <div>{{ deadlineText }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4>Description</h4>
+                        <p class="job-text">{{ job.description|nl2br }}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4>Requirements</h4>
+                        <p class="job-text">{{ job.requirements|nl2br }}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4>Responsibilities</h4>
+                        <p class="job-text">{{ job.responsibilities|nl2br }}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4>Links & Contact</h4>
+                        <div class="d-flex flex-column gap-2">
+
+                            {% if job.companyLink %}
+                                <a href="{{ job.companyLink }}" target="_blank" class="btn btn-outline-primary">
+                                    Company Website
+                                </a>
+                            {% endif %}
+
+                            {% if job.applicationLink %}
+                                <a href="{{ job.applicationLink }}" target="_blank" class="btn btn-primary">
+                                    Apply Now
+                                </a>
+                            {% endif %}
+
+                            {% if job.contactEmail %}
+                                <a href="mailto:{{ job.contactEmail }}" class="btn btn-outline-dark">
+                                    {{ job.contactEmail }}
+                                </a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <ul class="list-unstyled mb-4">
-                <li><strong>Location:</strong> {{ countryText }}, {{ cityText }}</li>
-                <li><strong>Experience:</strong> {{ experienceText }}</li>
-                <li><strong>Salary:</strong> {{ salaryText }}</li>
-                <li><strong>Published:</strong> {{ publicationText }}</li>
-                <li><strong>Deadline:</strong> {{ deadlineText }}</li>
-            </ul>
-
-            <p class="mb-4">{{ job.description }}</p>
-
-            {% if job.companyLink %}
-                <p class="mb-2">
-                    <strong>Company website:</strong>
-                    <a href="{{ job.companyLink }}" target="_blank" rel="noopener">{{ job.companyLink }}</a>
-                </p>
-            {% endif %}
-
-            {% if job.applicationLink %}
-                <a href="{{ job.applicationLink }}" target="_blank" rel="noopener" class="btn btn-primary me-2">
-                    Apply
-                </a>
-            {% endif %}
-
-            <a href="{{ path('jobs') }}" class="btn btn-outline-secondary">
-                Back to jobs
-            </a>
-
         </div>
+
     </div>
 
 </div>
