@@ -1,0 +1,15 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ job.titre }}
+        </h5>
+
+        <p class="card-text">
+            {{ job.description|slice(0, 100) }}...
+        </p>
+
+        <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary">
+            See more
+        </a>
+    </div>
+</div>

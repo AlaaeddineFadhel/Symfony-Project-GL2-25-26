@@ -1,92 +1,115 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Feed{% endblock %}
+{% block title %}Alumni | Feed{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ asset('styles/feed.css') }}">
+<link rel="stylesheet" href="{{ asset('styles/footer_navbar.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
 
 {% block body %}
 
-<h1>Meet INSATiens</h1>
+<h1 class="h1">Meet INSATiens</h1>
 
-{# Floating create post button + modal for logged in users #}
-{% if app.user %}
-    <div style="position:fixed; right:24px; bottom:24px; z-index:1050;">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal">+ Post</button>
-    </div>
+<div class="marquee-container">
+    <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">&#60;</button>
 
-    <div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Créer un post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" action="{{ path('app_post_create') }}">
-                    <div class="modal-body">
-                        <textarea name="content" class="form-control" rows="4" placeholder="Share an update..." required></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Post</button>
-                    </div>
-                </form>
-            </div>
+    <div class="marquee-wrapper">
+        <div class="marquee-track" id="profiles">
+
+            {% for profile in profiles %}
+                {% include 'feed/_profile_card.html.twig' with { profile: profile } %}
+            {% endfor %}
+
         </div>
     </div>
-{% endif %}
-                {% block css %}
-                    {{ parent() }}
-                    <link rel="stylesheet" href="{{ asset('styles/feed.css') }}">
-                {% endblock %}
 
-
-<div class="marquee-track">
-    {% for profile in profiles %}
-        <div class="profile-card">
-            <h3>{{ profile.insatien.prenom }} {{ profile.insatien.nom }}</h3>
-            <p>{{ profile.tagline }}</p>
-        </div>
-    {% endfor %}
+    <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">&#62;</button>
 </div>
 
-<h1>Jobs</h1>
+<h1 class="h1">New Posts</h1>
 
-<div class="row">
-    {% for job in jobs %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <h5>{{ job.titre }}</h5>
-                    <div class="text-muted small mb-2">
-                        {{ job.jobType.value }} • {{ job.jobMode.value }}
-                    </div>
-                    <p class="flex-grow-1">{{ job.description|slice(0, 100) }}...</p>
-                    <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary mt-auto">
-                        View details
-                    </a>
-                </div>
-            </div>
+<div class="marquee-container">
+
+    <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">
+        &#60;
+    </button>
+
+    <div class="marquee-wrapper">
+
+        <div class="marquee-track" id="posts">
+
+            {% if posts is not empty %}
+
+                {% for post in posts %}
+                    {% include 'feed/_post_card.html.twig' with { post: post } %}
+                {% endfor %}
+
+            {% else %}
+
+                <p class="no-posts">No posts available.</p>
+
+            {% endif %}
+
         </div>
-    {% endfor %}
+
+    </div>
+
+    <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">
+        &#62;
+    </button>
+
 </div>
 
-<h1>Internships</h1>
+<h1 class="h1">Job Offers</h1>
 
-<div class="row">
-    {% for job in internships %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <h5>{{ job.titre }}</h5>
-                    <div class="text-muted small mb-2">
-                        {{ job.jobType.value }} • {{ job.jobMode.value }}
-                    </div>
-                    <p class="flex-grow-1">{{ job.description|slice(0, 100) }}...</p>
-                    <a href="{{ path('job_detail', {id: job.id}) }}" class="btn btn-primary mt-auto">
-                        View details
-                    </a>
-                </div>
-            </div>
+<div class="marquee-container">
+    <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">&#60;</button>
+
+    <div class="marquee-wrapper">
+        <div class="marquee-track" id="jobs">
+
+            {% for job in jobs %}
+                {% include 'feed/_job_card.html.twig' with { job: job } %}
+            {% endfor %}
+
         </div>
-    {% endfor %}
+    </div>
+
+    <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">&#62;</button>
 </div>
+
+
+<h1 class="h1">Internship Offers</h1>
+
+<div class="marquee-container">
+    <button class="marquee-btn btn-left" onclick="scrollMarquee(this, -1)">&#60;</button>
+
+    <div class="marquee-wrapper">
+        <div class="marquee-track" id="internships">
+
+            {% for job in internships %}
+                {% include 'feed/_job_card.html.twig' with { job: job } %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <button class="marquee-btn btn-right" onclick="scrollMarquee(this, 1)">&#62;</button>
+</div>
+
+<script>
+function scrollMarquee(button, direction) {
+    const container = button.parentElement;
+    const wrapper = container.querySelector('.marquee-wrapper');
+    const scrollAmount = 320;
+
+    wrapper.scrollTo({
+        left: wrapper.scrollLeft + direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+</script>
 
 {% endblock %}

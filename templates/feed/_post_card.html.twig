@@ -1,0 +1,23 @@
+<div class="card feed-card">
+    <div class="card-body">
+        <div class="post-header">
+            <div class="user-info">
+                <h5 class="card-title">
+                    {{ post.user.insatien.prenom ?? '' }} {{ post.user.insatien.nom ?? '' }}
+                </h5>
+                <span class="post-date">
+                    {{ post.createdAt|date('d M Y') }}
+                </span>
+            </div>
+        </div>
+
+        <p class="card-text">
+            {{ post.content|slice(0, 150)|nl2br }}
+            {% if post.content|length > 150 %}...{% endif %}
+        </p>
+
+        <a href="{{ path('app_profile_view', {id: post.user.id}) }}" class="btn btn-primary w-100">
+            View Profile
+        </a>
+    </div>
+</div>

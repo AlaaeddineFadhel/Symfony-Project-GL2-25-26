@@ -1,0 +1,17 @@
+<div class="profile-card card">
+    <img src="{{ profile.avatarUrl }}" class="card-img-top">
+
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ profile.insatien.prenom }} {{ profile.insatien.nom }}
+        </h5>
+
+        <p class="card-text">
+            {{ profile.tagline }}
+        </p>
+
+        <a href="{{ path('app_profile_view', {id: profile.id}) }}" class="btn btn-primary w-100">
+            View Profile
+        </a>
+    </div>
+</div>

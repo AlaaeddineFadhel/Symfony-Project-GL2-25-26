@@ -15,11 +15,10 @@ class FeedController extends AbstractController
     #[Route('/feed', name: 'feed')]
     public function index(
         UserRepository $userRepo,
-        JobRepository  $jobRepo,
+        JobRepository $jobRepo,
         PostRepository $postRepo
-    ): Response
-    {
-        // login check
+    ): Response {
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_home');
         }
@@ -31,5 +30,4 @@ class FeedController extends AbstractController
             'posts' => $postRepo->findAllPosts(),
         ]);
     }
-
 }
