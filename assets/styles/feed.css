@@ -1,17 +1,48 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* light mode chabeb*/
+:root {
+    --primary: #711e1e;
+    --primary-light: #6d6160;
+
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+
+    --border: #e5e7eb;
+
+    --navbar-bg: rgba(255, 255, 255, 0.7);
+    --footer-bg: #f8fafc;
+
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+    --radius: 12px;
+    --transition: all 0.3s ease;
+}
+/*dark mode chabeb */
+[data-theme="dark"] {
+    --primary: #710a0a;
+    --primary-light: #9f7878;
+
+    --bg: #0f172a;
+    --bg-soft: #1e293b;
+
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+
+    --border: #334155;
+
+    --navbar-bg: rgba(29, 30, 34, 0.7);
+    --footer-bg: hsl(229, 84%, 5%);
+
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 body {
-    padding-top: 80px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: linear-gradient(90deg, #c7c8c9, #cfcfcf, #b6b9ba, #d5d5d5, #c6c7c8);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
+    transition: var(--transition);
 }
 
 @keyframes gradientShift {
