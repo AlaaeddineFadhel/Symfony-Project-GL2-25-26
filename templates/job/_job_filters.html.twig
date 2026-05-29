@@ -1,6 +1,5 @@
-<form method="GET" class="card shadow-sm sticky-top" style="top:90px;">
+<div class="card shadow-sm sticky-top" style="top:90px;">
     <div class="card-body">
-
         <h5>Filters</h5>
         <hr>
 
@@ -45,14 +44,24 @@
         <div class="mb-3">
             <h6 class="text-muted small">Salary</h6>
 
-            <input type="range" class="form-range" min="100" max="5000" value="{{ salary }}" id="range4" name="salary">
+            <input
+                type="range"
+                class="form-range"
+                min="100"
+                max="5000"
+                value="{{ salary ?: 100 }}"
+                id="range4"
+                name="salary"
+                oninput="document.getElementById('rangeValue')?.textContent = this.value + ' DT'"
+                onchange="this.form.submit()"
+            >
 
             <div class="d-flex justify-content-between small mt-1">
                 <span>100</span>
-                <span id="rangeValue">{{ salary }} DT</span>
+                <span id="rangeValue">{{ salary ?: 100 }} DT</span>
                 <span>5000</span>
             </div>
         </div>
 
     </div>
-</form>
+</div>

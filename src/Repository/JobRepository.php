@@ -73,7 +73,7 @@ class JobRepository extends ServiceEntityRepository
 
         if ($salary > 0) {
             $qb->andWhere('(
-                (j.salaryMin IS NOT NULL AND j.salaryMin <= :salary)
+                (j.salaryMin IS NOT NULL AND j.salaryMin >= :salary)
                 OR (j.salaryMax IS NOT NULL AND j.salaryMax >= :salary)
             )')
                 ->setParameter('salary', $salary);

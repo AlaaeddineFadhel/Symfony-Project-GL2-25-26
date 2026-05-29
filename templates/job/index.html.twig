@@ -9,27 +9,27 @@
 {% block body %}
 <br><br>
 <div class="page-content container-fluid px-4">
+    <form method="GET" action="{{ path('jobs') }}">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                {% include 'job/_job_filters.html.twig' %}
+            </div>
 
-    <div class="row g-4">
-        <div class="col-lg-3">
-            {% include 'job/_job_filters.html.twig' %}
-        </div>
 
+            <div class="col-lg-9">
 
-        <div class="col-lg-9">
+                {% include 'job/_job_search.html.twig' %}
 
-            {% include 'job/_job_search.html.twig' %}
+                <div class="row g-3">
+                    {% for job in jobs %}
+                        {% include 'job/_job_card.html.twig' with { job: job } %}
+                    {% endfor %}
+                </div>
 
-            <div class="row g-3">
-                {% for job in jobs %}
-                    {% include 'job/_job_card.html.twig' with { job: job } %}
-                {% endfor %}
             </div>
 
         </div>
-
-    </div>
-
+    </form>
 </div>
     <br>
 
@@ -53,13 +53,17 @@ bubbles.forEach(b => {
 const range = document.getElementById("range4");
 const rangeValue = document.getElementById("rangeValue");
 
-range.addEventListener("input", () => {
+if (range && rangeValue) {
     rangeValue.textContent = range.value + " DT";
-});
 
-range.addEventListener("change", () => {
-    range.form.submit();
-});
+    range.addEventListener("input", () => {
+        rangeValue.textContent = range.value + " DT";
+    });
+
+    range.addEventListener("change", () => {
+        range.form.submit();
+    });
+}
 
 document.getElementById("remoteCheck")?.addEventListener("change", function () {
     this.form.submit();

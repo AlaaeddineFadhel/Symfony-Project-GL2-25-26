@@ -80,7 +80,7 @@ h6.text-muted.small {
     border: 1px solid var(--border);
     cursor: pointer;
     font-size: 0.85rem;
-    background: #fff;
+    background: var(--card-bg);
     transition: 0.2s;
     user-select: none;
 }
@@ -101,6 +101,8 @@ h6.text-muted.small {
     border-radius: 10px;
     border: 1px solid var(--border);
     box-shadow: none !important;
+    background: var(--card-bg);
+    color: var(--text);
 }
 
 .form-control:focus,
@@ -123,6 +125,54 @@ input[type="range"] {
 .form-check-input:checked {
     background-color: var(--primary);
     border-color: var(--primary);
+}
+
+[data-theme="dark"] {
+    --bg: #121212;
+    --text: #f4f4f4;
+    --card-bg: #1f1f1f;
+    --primary: #65171e;
+    --primary-hover: #484d62;
+    --border: #333;
+    --muted: #aaaaaa;
+}
+
+[data-theme="dark"] .job-card p,
+[data-theme="dark"] .job-card h5,
+[data-theme="dark"] .job-text,
+[data-theme="dark"] .job-meta-box div,
+[data-theme="dark"] .job-meta-box small,
+[data-theme="dark"] .page-content,
+[data-theme="dark"] .card,
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    color: #fff;
+}
+
+[data-theme="dark"] .job-card p {
+    color: #fff;
+}
+
+[data-theme="dark"] .bubble {
+    background: #1f1f1f;
+    color: white;
+    border-color: #333;
+}
+
+[data-theme="dark"] .bubble.active {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background: #1f1f1f;
+    color: var(--text);
+    border-color: #333;
+}
+
+[data-theme="dark"] .btn-outline-dark {
+    color: var(--text);
 }
 
 @media (max-width: 992px) {

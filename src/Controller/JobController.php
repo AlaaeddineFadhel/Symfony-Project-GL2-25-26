@@ -35,7 +35,7 @@ class JobController extends AbstractController
         $onsite  = $request->query->get('onsite', '');
         $hybrid  = $request->query->get('hybrid', '');
 
-        $salary  = $request->query->get('salary', 0);
+        $salary  = $request->query->getInt('salary', 0);
 
         $jobs = $jobRepo->findFiltered(
             $title,
